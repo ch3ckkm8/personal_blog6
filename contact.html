@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="A personal cybersecurity blog template covering writeups, requests, and an interactive tag graph.">
+    <meta name="author" content="Your Name">
+    <meta name="keywords" content="CTF, writeups, cybersecurity, template, static site">
+    <meta charset="UTF-8">
+
+    <title>Contact | 0xnotes</title>
+    <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+
+    <!-- Theme restore: inline so it runs before Bootstrap CSS paints -->
+    <script>document.documentElement.setAttribute('data-bs-theme', localStorage.getItem('theme') || 'light');</script>
+    <!-- Bootstrap 5.3 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/common.css">
+    <link rel="stylesheet" href="css/contact.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" defer></script>
+    <!-- jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js" defer></script>
+    <!-- Custom JS -->
+    <script src="js/theme.js"      defer></script>
+    <script src="js/components.js" defer></script>
+    <script src="js/contact.js"    defer></script>
+</head>
+
+<body class="d-flex flex-column min-vh-100">
+
+  <div id="navbar-placeholder"></div>
+
+  <main id="main-content" class="flex-grow-1">
+    <div class="container py-5">
+
+      <!-- ── Page header ─────────────────────────────────────────── -->
+      <div class="mb-5">
+        <h1 class="h3 fw-bold mb-1">Get in Touch</h1>
+        <p class="text-muted mb-0">
+          Collaborations, questions, or feedback — replace this copy with your own.
+        </p>
+      </div>
+
+      <div class="row g-5">
+
+        <!-- ── Left: Contact form ──────────────────────────────────── -->
+        <div class="col-lg-7">
+          <div class="card rounded-3">
+            <div class="card-body p-4">
+
+              <h2 class="h5 fw-semibold mb-4">Send a Message</h2>
+
+              <form id="contact-form"
+                    class="contact-form"
+                    novalidate
+                    aria-label="Contact form">
+
+                <div class="row g-3">
+
+                  <div class="col-sm-6">
+                    <label for="contact-name" class="form-label">
+                      Name <span class="text-danger" aria-hidden="true">*</span>
+                    </label>
+                    <input id="contact-name"
+                           type="text"
+                           class="form-control"
+                           placeholder="Your name"
+                           required
+                           aria-required="true"
+                           maxlength="80">
+                    <div class="invalid-feedback"></div>
+                  </div>
+
+                  <div class="col-sm-6">
+                    <label for="contact-email" class="form-label">
+                      Email <span class="text-danger" aria-hidden="true">*</span>
+                    </label>
+                    <input id="contact-email"
+                           type="email"
+                           class="form-control"
+                           placeholder="you@example.com"
+                           required
+                           aria-required="true"
+                           maxlength="120">
+                    <div class="invalid-feedback"></div>
+                  </div>
+
+                  <div class="col-12">
+                    <label for="contact-subject" class="form-label">
+                      Subject <span class="text-danger" aria-hidden="true">*</span>
+                    </label>
+                    <input id="contact-subject"
+                           type="text"
+                           class="form-control"
+                           placeholder="What's it about?"
+                           required
+                           aria-required="true"
+                           maxlength="150">
+                    <div class="invalid-feedback"></div>
+                  </div>
+
+                  <div class="col-12">
+                    <label for="contact-message" class="form-label">
+                      Message <span class="text-danger" aria-hidden="true">*</span>
+                    </label>
+                    <textarea id="contact-message"
+                              class="form-control"
+                              rows="5"
+                              placeholder="Your message…"
+                              required
+                              aria-required="true"
+                              maxlength="2000"></textarea>
+                    <div class="invalid-feedback"></div>
+                  </div>
+
+                  <div class="col-12">
+                    <button type="submit" class="btn btn-accent">
+                      <i class="bi bi-send me-1" aria-hidden="true"></i>
+                      Send Message
+                    </button>
+                  </div>
+
+                </div>
+
+              </form>
+
+              <p class="text-muted small mt-3 mb-0">
+                <i class="bi bi-info-circle me-1" aria-hidden="true"></i>
+                This is a front-end-only demo form. It doesn't send anything —
+                wire it up to a form backend (e.g. Formspree, Getform) or your own
+                API if you need real submissions on GitHub Pages.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── Right: Social links ──────────────────────────── -->
+        <div class="col-lg-5">
+
+          <!-- Social / contact links -->
+          <h2 class="h5 fw-semibold mb-3">Find me Online</h2>
+
+          <div class="d-flex flex-column gap-3 mb-4">
+
+            <a href="#"
+               class="contact-link"
+               aria-label="GitHub profile placeholder link">
+              <i class="bi bi-github fs-5 me-3" aria-hidden="true"></i>
+              <div>
+                <div class="fw-semibold">GitHub</div>
+                <div class="text-muted small">github.com/yourhandle</div>
+              </div>
+            </a>
+
+            <a href="#"
+               class="contact-link"
+               aria-label="Twitter / X profile placeholder link">
+              <i class="bi bi-twitter-x fs-5 me-3" aria-hidden="true"></i>
+              <div>
+                <div class="fw-semibold">Twitter / X</div>
+                <div class="text-muted small">@yourhandle</div>
+              </div>
+            </a>
+
+            <a href="#"
+               class="contact-link"
+               aria-label="LinkedIn profile placeholder link">
+              <i class="bi bi-linkedin fs-5 me-3" aria-hidden="true"></i>
+              <div>
+                <div class="fw-semibold">LinkedIn</div>
+                <div class="text-muted small">linkedin.com/in/yourhandle</div>
+              </div>
+            </a>
+
+            <a href="#"
+               class="contact-link"
+               aria-label="HackTheBox profile placeholder link">
+              <i class="bi bi-shield-lock fs-5 me-3" aria-hidden="true"></i>
+              <div>
+                <div class="fw-semibold">HackTheBox</div>
+                <div class="text-muted small">app.hackthebox.com/yourhandle</div>
+              </div>
+            </a>
+          </div>
+
+          <!-- Location placeholder — swap for a real map embed if you want one -->
+          <div id="location-section">
+            <h2 class="h5 fw-semibold mb-3">Location</h2>
+            <div class="map-placeholder">
+              <i class="bi bi-geo-alt fs-4 d-block mb-2" aria-hidden="true"></i>
+              Drop a Google Maps (or other) embed here, or remove this section entirely.
+            </div>
+          </div>
+        </div><!-- /col-lg-5 -->
+      </div><!-- /row -->
+    </div><!-- /container -->
+  </main>
+
+  <!-- ── Confirmation modal (shown after successful form submit) ── -->
+  <div class="modal fade"
+       id="confirmModal"
+       tabindex="-1"
+       aria-labelledby="confirmModalLabel"
+       aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+      <div class="modal-content">
+
+        <div class="modal-header">
+          <h5 class="modal-title" id="confirmModalLabel">
+            <i class="bi bi-check-circle-fill text-success me-2" aria-hidden="true"></i>
+            Message Sent!
+          </h5>
+          <button type="button"
+                  class="btn-close"
+                  data-bs-dismiss="modal"
+                  aria-label="Close confirmation"></button>
+        </div>
+
+        <div class="modal-body">
+          <p class="text-muted mb-3" style="font-size:.9rem;">
+            Thanks for reaching out!. Here's a copy of what you sent:
+          </p>
+          <!-- Summary injected by contact.js -->
+          <div id="modal-details" aria-live="polite"></div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button"
+                  class="btn btn-accent"
+                  data-bs-dismiss="modal">Done</button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+  <!-- /confirmModal -->
+
+  <div id="footer-placeholder"></div>
+
+</body>
+</html>

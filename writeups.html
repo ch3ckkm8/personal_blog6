@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="A personal cybersecurity blog template covering writeups, requests, and an interactive tag graph.">
+    <meta name="author" content="Your Name">
+    <meta name="keywords" content="CTF, writeups, cybersecurity, template, static site">
+    <meta charset="UTF-8">
+
+    <title>Writeups | 0xnotes</title>
+    <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+
+    <!-- Theme restore: inline so it runs before Bootstrap CSS paints -->
+    <script>document.documentElement.setAttribute('data-bs-theme', localStorage.getItem('theme') || 'light');</script>
+    <!-- Bootstrap 5.3 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/common.css">
+    <link rel="stylesheet" href="css/writeups.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" defer></script>
+    <!-- jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js" defer></script>
+    <!-- Custom JS -->
+    <script src="js/theme.js"      defer></script>
+    <script src="js/components.js" defer></script>
+    <script src="js/writeups.js"      defer></script>
+</head>
+
+
+<body class="d-flex flex-column min-vh-100">
+
+  <div id="navbar-placeholder"></div>
+
+  <main id="main-content" class="flex-grow-1">
+    <div class="container py-5">
+
+      <!-- Page header  -->
+      <div class="mb-5">
+        <h1 class="h3 fw-bold mb-1">Writeups</h1>
+        <p class="text-muted mb-0">
+          HackTheBox machines, CTF challenges, and malware analysis walkthroughs.
+        </p>
+      </div>
+
+      <!-- Featured writeup-->
+      <section id="featured-section"
+               class="mb-5"
+               aria-labelledby="featured-heading">
+        <h2 id="featured-heading" class="h5 fw-semibold mb-3">
+          <i class="bi bi-star-fill accent me-1" aria-hidden="true"></i>
+          Featured
+        </h2>
+        <!-- Injected by writeups.js -->
+        <div id="featured-writeup" aria-live="polite"></div>
+      </section>
+
+      <div class="row g-5">
+
+        <!-- Main grid column  -->
+        <div class="col-lg-9">
+
+          <!-- Search + category filters -->
+          <div class="mb-4">
+
+            <!-- Search input -->
+            <div class="input-group mb-3" style="max-width:420px;">
+              <span class="input-group-text bg-transparent border-end-0"
+                    aria-hidden="true">
+                <i class="bi bi-search"></i>
+              </span>
+              <input id="writeup-search"
+                     type="search"
+                     class="form-control border-start-0"
+                     placeholder="Search writeups…"
+                     aria-label="Search writeups by title, tag, or keyword">
+              <button id="search-clear"
+                      class="btn btn-outline-secondary"
+                      type="button"
+                      aria-label="Clear search">
+                <i class="bi bi-x" aria-hidden="true"></i>
+              </button>
+            </div>
+
+            <!-- Category filter chips -->
+            <div role="group" aria-label="Filter writeups by category"
+                 class="d-flex flex-wrap gap-2">
+              <button class="filter-btn active"
+                      data-filter="all"
+                      aria-pressed="true">All</button>
+              <button class="filter-btn"
+                      data-filter="HTB"
+                      aria-pressed="false">HackTheBox</button>
+              <button class="filter-btn"
+                      data-filter="CTF"
+                      aria-pressed="false">CTF</button>
+              <button class="filter-btn"
+                      data-filter="Malware"
+                      aria-pressed="false">Malware</button>
+            </div>
+
+          </div>
+
+          <!-- Live count for screen readers -->
+          <p id="writeup-count"
+             class="text-muted small mb-3"
+             aria-live="polite"
+             aria-atomic="true"></p>
+
+          <!-- Writeup cards grid -->
+          <div id="writeup-grid"
+               class="row g-4"
+               aria-live="polite"
+               aria-label="Writeup cards">
+            <!-- Injected by writeups.js -->
+          </div>
+
+          <!-- Empty state -->
+          <div id="writeup-empty"
+               class="text-center py-5 d-none"
+               aria-live="polite">
+            <i class="bi bi-search fs-1 text-muted d-block mb-2" aria-hidden="true"></i>
+            <p class="text-muted mb-0">No writeups match your search or filter.</p>
+          </div>
+
+        </div>
+
+        <!-- Sidebar: tag cloud -->
+        <aside class="col-lg-3" aria-labelledby="tag-cloud-heading">
+          <div class="sticky-sidebar">
+            <h2 id="tag-cloud-heading" class="h6 fw-semibold mb-3">Browse by Tag</h2>
+            <!-- Tags injected by writeups.js -->
+            <div id="tag-cloud"
+                 class="d-flex flex-wrap gap-2"
+                 aria-label="Tag cloud for filtering writeups">
+            </div>
+            <a href="graph.html" class="btn btn-sm btn-outline-success mt-3 w-100">
+              <i class="bi bi-diagram-3 me-1" aria-hidden="true"></i>
+              View as a graph
+            </a>
+          </div>
+        </aside>
+
+      </div>
+
+    </div>
+  </main>
+
+  <div id="footer-placeholder"></div>
+
+</body>
+</html>

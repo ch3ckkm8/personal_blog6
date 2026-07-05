@@ -1,0 +1,74 @@
+/* ── Social / contact links ─────────────────────────────────────
+   Bootstrap has no built-in "social card link" component, so this
+   is fully custom. Border-radius uses Bootstrap's own --bs-border-radius-lg
+   so it stays in sync with the rest of the theme.                  */
+.contact-link {
+  display:         flex;
+  align-items:     center;
+  padding:         .9rem 1rem;
+  border:          1px solid var(--bs-border-color);
+  border-radius:   var(--bs-border-radius-lg);
+  text-decoration: none;
+  color:           var(--bs-body-color);
+  transition:      border-color .15s, color .15s;
+}
+
+.contact-link:hover {
+  border-color: var(--accent);
+  color:        var(--accent);
+}
+
+/* ── Form controls ──────────────────────────────────────────────
+   Bootstrap already sets border, background, padding, and base
+   transition on .form-control. We only override:
+     1. font-size — intentionally smaller than Bootstrap's 1rem
+     2. border-radius — rounder than Bootstrap's default 0.375rem
+     3. focus ring — swap Bootstrap's blue for the site accent      */
+.contact-form .form-control {
+  font-size:    .875rem;
+  border-radius: var(--bs-border-radius-lg);
+}
+
+.contact-form .form-control:focus {
+  border-color: var(--accent);
+  box-shadow:   0 0 0 3px rgba(0, 208, 132, .15);
+}
+
+/* ── Location placeholder block (swap for a real map embed) ─────── */
+#location-section {
+  padding:    2.5rem 0;
+  border-top: 1px solid var(--bs-border-color-translucent);
+}
+
+.map-placeholder {
+  border-radius: var(--bs-border-radius-lg);
+  border:        1px dashed var(--bs-border-color);
+  padding:       2rem 1rem;
+  text-align:    center;
+  color:         var(--bs-secondary-color);
+  font-size:     .85rem;
+}
+
+/* ── Confirmation modal ─────────────────────────────────────────
+   Bootstrap handles the modal shell. These rules only touch things
+   Bootstrap doesn't style: accent-colored title, divider rows in
+   the summary, and the mono uppercase label style.                 */
+#confirmModal .modal-title {
+  color: var(--accent);
+}
+
+.confirm-detail {
+  font-size:     .875rem;
+  padding:       .5rem 0;
+  border-bottom: 1px solid var(--bs-border-color-translucent);
+}
+
+.confirm-detail:last-child { border-bottom: none; }
+
+.confirm-label {
+  font-family:    var(--font-mono);
+  font-size:      .7rem;
+  text-transform: uppercase;
+  letter-spacing: .07em;
+  color:          var(--bs-secondary-color);
+}

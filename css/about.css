@@ -1,0 +1,138 @@
+/* ── Bio section ───────────────────────────────────────────────── */
+#bio { padding: 3rem 0; }
+
+.avatar-wrap {
+  width:         100px;
+  height:        100px;
+  border-radius: 50%;
+  border:        2px solid var(--accent);
+  overflow:      hidden;
+  flex-shrink:   0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bs-secondary-bg);
+  font-size: 2.2rem;
+  color: var(--bs-secondary-color);
+}
+
+/* ── Skills chips ──────────────────────────────────────────────── */
+.skill-chip {
+  display:       inline-block;
+  padding:       .25rem .75rem;
+  border:        1px solid var(--bs-border-color);
+  border-radius: 2rem;
+  font-size:     .78rem;
+  font-family:   var(--font-mono);
+  transition:    border-color var(--transition), color var(--transition);
+}
+
+.skill-chip:hover {
+  border-color: var(--accent);
+  color:        var(--accent);
+}
+
+/* ── Team grid cards ───────────────────────────────────────────── */
+#team {
+  padding:    2.5rem 0;
+  border-top: 1px solid var(--bs-border-color-translucent);
+}
+
+.team-card {
+  text-align: center;
+  padding:    1.5rem;
+}
+
+.team-avatar {
+  width:         80px;
+  height:        80px;
+  border-radius: 50%;
+  background-color: var(--bs-secondary-bg);
+  border:        2px solid var(--bs-border-color);
+  display:       flex;
+  align-items:   center;
+  justify-content: center;
+  font-size:     2rem;
+  color:         var(--bs-secondary-color);
+  margin:        0 auto 1rem;
+  transition:    border-color var(--transition);
+}
+
+.team-card:hover .team-avatar { border-color: var(--accent); }
+
+/* ── Carousel ──────────────────────────────────────────────────── */
+#testimonials {
+  padding:    2.5rem 0;
+  border-top: 1px solid var(--bs-border-color-translucent);
+}
+
+.carousel-item blockquote {
+  font-size:   1.05rem;
+  font-style:  italic;
+  line-height: 1.8;
+}
+
+.carousel-control-prev,
+.carousel-control-next {
+  width:   10%;
+  opacity: 0.85;
+}
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+  background-color: rgba(0, 0, 0, 0.45);
+  border-radius:    50%;
+  padding:          1rem;
+  background-size:  50%;
+}
+
+.carousel-control-prev:hover .carousel-control-prev-icon,
+.carousel-control-next:hover .carousel-control-next-icon {
+  background-color: var(--accent);
+}
+
+.testimonial-carousel {
+  padding-bottom: 2.5rem;
+}
+
+.testimonial-slide {
+  padding: 1.5rem 2rem;
+}
+
+.testimonial-text {
+  font-size:   1.05rem;
+  font-style:  italic;
+  line-height: 1.8;
+}
+
+/* ── Timeline ──────────────────────────────────────────────────── */
+#timeline {
+  padding:    2.5rem 0;
+  border-top: 1px solid var(--bs-border-color-translucent);
+}
+
+.timeline-item {
+  position:     relative;
+  padding-left: 1.5rem;
+  padding-bottom: 2rem;
+  border-left:  2px solid var(--bs-border-color);
+}
+
+.timeline-item:last-child { border-left-color: transparent; }
+
+.timeline-dot {
+  position:         absolute;
+  left:             -5px;
+  top:              .3rem;
+  width:            8px;
+  height:           8px;
+  border-radius:    50%;
+  background-color: var(--accent);
+}
+
+.timeline-date {
+  font-size:   .72rem;
+  font-family: var(--font-mono);
+  color:       var(--bs-secondary-color);
+  margin-bottom: .15rem;
+}

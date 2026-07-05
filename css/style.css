@@ -1,0 +1,51 @@
+#hero {
+  padding-top:    5rem;
+  padding-bottom: 2.5rem;
+}
+
+#hero h1 {
+  font-size:      clamp(1.8rem, 5vw, 2.8rem);
+  font-weight:    800;
+  letter-spacing: -.04em;
+  line-height:    1.15;
+}
+
+/* ── Latest Activity section ───────────────────────────────────── */
+
+.activity-item {
+  display:      flex;
+  align-items:  flex-start;
+  gap:          .75rem;
+  padding:      .75rem 0;
+  border-bottom: 1px solid var(--bs-border-color-translucent);
+}
+
+.activity-item:last-child { border-bottom: none; }
+
+.activity-dot {
+  width:  10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: var(--accent);
+  flex-shrink: 0;
+  margin-top:  .45rem;
+}
+
+/* ── Feature cards on home page ──────────────────────────────── */
+.feature-card {
+  height: 100%;
+  padding: 1.5rem;
+  border: 1px solid var(--bs-border-color);
+  border-radius: var(--bs-border-radius-lg);
+  transition: border-color var(--transition), transform var(--transition);
+}
+
+.feature-card:hover {
+  border-color: var(--accent);
+  transform: translateY(-2px);
+}
+
+.feature-card .bi {
+  font-size: 1.6rem;
+  color: var(--accent);
+}
