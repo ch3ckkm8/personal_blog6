@@ -1,0 +1,189 @@
+/* ── Graph layout ────────────────────────────────────────────── */
+#graph-page-header { padding: 2.5rem 0 1rem; }
+
+.graph-shell {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+
+@media (min-width: 992px) {
+  .graph-shell {
+    grid-template-columns: 1fr 320px;
+    align-items: start;
+  }
+}
+
+/* ── Canvas / SVG stage ──────────────────────────────────────── */
+.graph-stage {
+  position: relative;
+  border: 1px solid var(--bs-border-color);
+  border-radius: var(--bs-border-radius-lg);
+  background: var(--bs-body-bg);
+  overflow: hidden;
+  height: 70vh;
+  min-height: 420px;
+}
+
+#knowledge-graph { width: 100%; height: 100%; display: block; cursor: grab; }
+#knowledge-graph:active { cursor: grabbing; }
+
+.graph-toolbar {
+  position: absolute;
+  top: .75rem;
+  left: .75rem;
+  right: .75rem;
+  display: flex;
+  gap: .5rem;
+  flex-wrap: wrap;
+  align-items: center;
+  z-index: 3;
+  pointer-events: none;
+}
+
+.graph-toolbar > * { pointer-events: auto; }
+
+#graph-search {
+  max-width: 220px;
+  font-size: .82rem;
+  border-radius: var(--bs-border-radius);
+  border: 1px solid var(--bs-border-color);
+  background: var(--bs-body-bg);
+}
+
+#graph-search:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-dim);
+}
+
+.graph-btn {
+  font-size: .78rem;
+  font-family: var(--font-mono);
+  padding: .3rem .7rem;
+  border-radius: var(--bs-border-radius);
+  border: 1px solid var(--bs-border-color);
+  background: var(--bs-body-bg);
+  color: var(--bs-body-color);
+  transition: border-color var(--transition), color var(--transition);
+}
+
+.graph-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+.graph-zoom-group {
+  position: absolute;
+  bottom: .75rem;
+  right: .75rem;
+  display: flex;
+  flex-direction: column;
+  gap: .35rem;
+  z-index: 3;
+}
+
+.graph-legend {
+  position: absolute;
+  bottom: .75rem;
+  left: .75rem;
+  display: flex;
+  gap: .75rem;
+  flex-wrap: wrap;
+  font-size: .72rem;
+  font-family: var(--font-mono);
+  color: var(--bs-secondary-color);
+  background: var(--bs-body-bg);
+  padding: .35rem .6rem;
+  border: 1px solid var(--bs-border-color-translucent);
+  border-radius: var(--bs-border-radius);
+  z-index: 3;
+}
+
+.legend-dot {
+  display: inline-block;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  margin-right: .3rem;
+}
+
+/* ── Graph nodes / links (SVG) ──────────────────────────────── */
+.graph-link {
+  stroke: var(--bs-border-color);
+  stroke-opacity: .6;
+  transition: stroke-opacity var(--transition), stroke var(--transition);
+}
+
+.graph-link.is-dim { stroke-opacity: .08; }
+.graph-link.is-active { stroke: var(--accent); stroke-opacity: .9; }
+
+.graph-node circle {
+  stroke: var(--bs-body-bg);
+  stroke-width: 1.5px;
+  transition: opacity var(--transition), stroke var(--transition);
+}
+
+.graph-node.is-dim { opacity: .15; }
+.graph-node.is-active circle { stroke: var(--accent); stroke-width: 2.5px; }
+
+.graph-node text {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  fill: var(--bs-body-color);
+  pointer-events: none;
+  paint-order: stroke;
+  stroke: var(--bs-body-bg);
+  stroke-width: 3px;
+}
+
+.graph-node { cursor: pointer; }
+
+/* ── Side info panel ─────────────────────────────────────────── */
+.graph-panel {
+  border: 1px solid var(--bs-border-color);
+  border-radius: var(--bs-border-radius-lg);
+  padding: 1.25rem;
+  min-height: 220px;
+}
+
+.graph-panel-empty {
+  color: var(--bs-secondary-color);
+  font-size: .85rem;
+  text-align: center;
+  padding: 1.5rem 0;
+}
+
+.graph-panel .panel-eyebrow {
+  font-family: var(--font-mono);
+  font-size: .68rem;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  color: var(--accent);
+  display: block;
+  margin-bottom: .35rem;
+}
+
+.graph-panel .panel-tag-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .35rem;
+  margin: .75rem 0;
+}
+
+.graph-panel .related-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  font-size: .82rem;
+}
+
+.graph-panel .related-list li {
+  padding: .4rem 0;
+  border-bottom: 1px solid var(--bs-border-color-translucent);
+}
+
+.graph-panel .related-list li:last-child { border-bottom: none; }
+
+.graph-panel .related-list a {
+  text-decoration: none;
+  color: var(--bs-body-color);
+}
+
+.graph-panel .related-list a:hover { color: var(--accent); }
