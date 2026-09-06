@@ -4,10 +4,20 @@
 }
 
 #hero h1 {
+  font-family:    var(--font-mono);
   font-size:      clamp(1.8rem, 5vw, 2.8rem);
-  font-weight:    800;
-  letter-spacing: -.04em;
+  font-weight:    700;
+  letter-spacing: -.02em;
   line-height:    1.15;
+}
+
+/* The one deliberate terminal moment on the page: a blinking block
+   cursor at the end of the headline, like a prompt waiting for input. */
+#hero h1::after {
+  content:      "_";
+  color:        var(--accent);
+  animation:    term-blink 1s step-end infinite;
+  margin-left:  .05em;
 }
 
 /* ── Latest Activity section ───────────────────────────────────── */
@@ -23,12 +33,12 @@
 .activity-item:last-child { border-bottom: none; }
 
 .activity-dot {
-  width:  10px;
-  height: 10px;
-  border-radius: 50%;
+  width:  8px;
+  height: 8px;
+  border-radius: 1px;
   background-color: var(--accent);
   flex-shrink: 0;
-  margin-top:  .45rem;
+  margin-top:  .5rem;
 }
 
 /* ── Feature cards on home page ──────────────────────────────── */
@@ -36,13 +46,16 @@
   height: 100%;
   padding: 1.5rem;
   border: 1px solid var(--bs-border-color);
-  border-radius: var(--bs-border-radius-lg);
-  transition: border-color var(--transition), transform var(--transition);
+  border-left: 1px solid var(--bs-border-color);
+  border-radius: var(--radius-md);
+  transition: border-color var(--transition), border-left-color var(--transition), border-left-width var(--transition);
 }
 
+/* No card-lift; a widening accent rule on the left reads like a
+   selected line in a log or file listing. */
 .feature-card:hover {
   border-color: var(--accent);
-  transform: translateY(-2px);
+  border-left-width: 3px;
 }
 
 .feature-card .bi {

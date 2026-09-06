@@ -46,7 +46,8 @@
 #graph-search {
   max-width: 220px;
   font-size: .82rem;
-  border-radius: var(--bs-border-radius);
+  font-family: var(--font-mono);
+  border-radius: var(--radius-sm);
   border: 1px solid var(--bs-border-color);
   background: var(--bs-body-bg);
 }
@@ -60,7 +61,7 @@
   font-size: .78rem;
   font-family: var(--font-mono);
   padding: .3rem .7rem;
-  border-radius: var(--bs-border-radius);
+  border-radius: var(--radius-sm);
   border: 1px solid var(--bs-border-color);
   background: var(--bs-body-bg);
   color: var(--bs-body-color);
@@ -138,7 +139,7 @@
 /* ── Side info panel ─────────────────────────────────────────── */
 .graph-panel {
   border: 1px solid var(--bs-border-color);
-  border-radius: var(--bs-border-radius-lg);
+  border-radius: var(--radius-md);
   padding: 1.25rem;
   min-height: 220px;
 }
@@ -150,6 +151,8 @@
   padding: 1.5rem 0;
 }
 
+/* "$" marks an executed lookup, distinct from the ">" used for
+   navigation elsewhere on the site — same prompt language, different verb. */
 .graph-panel .panel-eyebrow {
   font-family: var(--font-mono);
   font-size: .68rem;
@@ -159,6 +162,8 @@
   display: block;
   margin-bottom: .35rem;
 }
+
+.graph-panel .panel-eyebrow::before { content: "$ "; opacity: .6; }
 
 .graph-panel .panel-tag-list {
   display: flex;

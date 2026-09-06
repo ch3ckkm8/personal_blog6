@@ -17,15 +17,20 @@
 }
 
 /* ── Skills chips ──────────────────────────────────────────────── */
+/* Bracketed like a CLI flag ([nmap], [python]) rather than a soft
+   rounded pill — this bracket motif repeats on every tag site-wide. */
 .skill-chip {
   display:       inline-block;
-  padding:       .25rem .75rem;
+  padding:       .25rem .6rem;
   border:        1px solid var(--bs-border-color);
-  border-radius: 2rem;
+  border-radius: var(--radius-sm);
   font-size:     .78rem;
   font-family:   var(--font-mono);
   transition:    border-color var(--transition), color var(--transition);
 }
+
+.skill-chip::before { content: "["; opacity: .5; }
+.skill-chip::after  { content: "]"; opacity: .5; }
 
 .skill-chip:hover {
   border-color: var(--accent);
