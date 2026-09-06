@@ -3,12 +3,27 @@
   padding: 2rem 0;
 }
 
+/* The one bold terminal moment on this page: a fake title bar
+   showing a file path, in keeping with what this card actually is —
+   a featured writeup. */
 .featured-card {
-  border:       2px solid var(--accent);
-  border-radius: var(--bs-border-radius);
-  padding:      1.5rem;
-  position:     relative;
-  overflow:     hidden;
+  border:        1px solid var(--accent);
+  border-radius: var(--radius-md);
+  padding:       2.5rem 1.5rem 1.5rem;
+  position:      relative;
+  overflow:      hidden;
+}
+
+.featured-card::before {
+  content:          "~/writeups/featured.md";
+  position:         absolute;
+  top: 0; left: 0; right: 0;
+  padding:          .35rem .75rem;
+  background:       var(--accent-dim);
+  border-bottom:    1px solid var(--accent);
+  font-family:      var(--font-mono);
+  font-size:        .68rem;
+  color:            var(--accent);
 }
 
 .featured-badge {
@@ -21,6 +36,8 @@
   display:      block;
 }
 
+.featured-badge::before { content: "$ "; opacity: .6; }
+
 .featured-card h3 a {
   text-decoration: none;
   color:           var(--bs-body-color);
@@ -31,10 +48,11 @@
 
 /* Search bar  */
 #writeup-search {
-  border:     1px solid var(--bs-border-color);
-  font-size:  .875rem;
-  border-radius: var(--bs-border-radius);
-  transition: border-color var(--transition), box-shadow var(--transition);
+  border:       1px solid var(--bs-border-color);
+  font-size:    .875rem;
+  font-family:  var(--font-mono);
+  border-radius: var(--radius-sm);
+  transition:   border-color var(--transition), box-shadow var(--transition);
 }
 
 #writeup-search:focus {
@@ -46,7 +64,7 @@
 .filter-btn {
   font-size:     .76rem;
   font-family:   var(--font-mono);
-  border-radius: 2rem;
+  border-radius: var(--radius-sm);
   padding:       .2rem .7rem;
   border:        1px solid var(--bs-border-color);
   background:    transparent;
@@ -88,12 +106,15 @@
 
 .tag {
   font-size:     .68rem;
-  padding:       .1rem .45rem;
-  border-radius: 2rem;
+  padding:       .1rem .4rem;
+  border-radius: var(--radius-sm);
   border:        1px solid var(--bs-border-color);
   font-family:   var(--font-mono);
   display:       inline-block;
 }
+
+.tag::before { content: "["; opacity: .5; }
+.tag::after  { content: "]"; opacity: .5; }
 
 /* Sidebar */
 .sticky-sidebar {
@@ -105,9 +126,9 @@
 #tag-cloud { padding: 1.5rem 0 3rem; }
 
 .tag-cloud-item {
-  padding:       .3rem .8rem;
+  padding:       .3rem .7rem;
   border:        1px solid var(--bs-border-color);
-  border-radius: 2rem;
+  border-radius: var(--radius-sm);
   font-size:     .8rem;
   font-family:   var(--font-mono);
   cursor:        pointer;
@@ -116,6 +137,9 @@
   color:         var(--bs-body-color);
   display:       inline-block;
 }
+
+.tag-cloud-item::before { content: "["; opacity: .5; }
+.tag-cloud-item::after  { content: "]"; opacity: .5; }
 
 .tag-cloud-item:hover {
   border-color:     var(--accent);
