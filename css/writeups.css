@@ -113,9 +113,6 @@
   display:       inline-block;
 }
 
-.tag::before { content: "["; opacity: .5; }
-.tag::after  { content: "]"; opacity: .5; }
-
 /* Sidebar */
 .sticky-sidebar {
   position: sticky;
@@ -137,9 +134,6 @@
   color:         var(--bs-body-color);
   display:       inline-block;
 }
-
-.tag-cloud-item::before { content: "["; opacity: .5; }
-.tag-cloud-item::after  { content: "]"; opacity: .5; }
 
 .tag-cloud-item:hover {
   border-color:     var(--accent);
