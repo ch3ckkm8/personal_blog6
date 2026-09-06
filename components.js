@@ -11,10 +11,17 @@ $(document).ready(function () {
           0xnotes<span>.sh</span>
         </a>
 
+        <!-- Terminal color theme picker -->
+        <div class="d-flex gap-2 align-items-center ms-auto me-3" aria-label="Terminal color theme">
+          <button class="theme-swatch theme-swatch--green" data-theme="green" aria-label="Green theme" title="Green theme"></button>
+          <button class="theme-swatch theme-swatch--blue"  data-theme="blue"  aria-label="Blue theme"  title="Blue theme"></button>
+          <button class="theme-swatch theme-swatch--amber" data-theme="amber" aria-label="Amber theme" title="Amber theme"></button>
+        </div>
+
         <!-- Dark-mode toggle -->
         <button id="dark-mode-toggle"
                 type="button"
-                class="btn btn-sm ms-auto me-2"
+                class="btn btn-sm me-2"
                 aria-label="Toggle dark mode"
                 title="Toggle dark mode">
           <i class="bi bi-moon-stars-fill" aria-hidden="true"></i>
@@ -129,9 +136,12 @@ $(document).ready(function () {
 
   $('#footer-placeholder').html(footerHTML);
 
-  /* ── Sync dark-mode icon now the button is in the DOM ────────── */
+  /* ── Sync dark-mode icon and color-theme swatches now they're in
+     the DOM (ThemeManager sets the <html> attributes on page load,
+     before these controls exist) ─────────────────────────────── */
   if (window.ThemeManager) {
     window.ThemeManager.updateIcon($('html').attr('data-bs-theme') || 'light');
+    window.ThemeManager.updateSwatches($('html').attr('data-terminal-theme') || 'green');
   }
 
 });

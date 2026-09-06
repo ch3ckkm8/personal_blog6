@@ -120,7 +120,7 @@ $(document).ready(function () {
 
     const tagsHTML = featured.tags.map(function (tag) {
       return `<span class="tag" data-tag="${tag}" role="button"
-                    tabindex="0" aria-label="Filter by tag: ${tag}">#${tag}</span>`;
+                    tabindex="0" aria-label="Filter by tag: ${tag}">${tag}</span>`;
     }).join('');
 
     $('#featured-writeup').html(`
@@ -156,7 +156,7 @@ $(document).ready(function () {
   function buildCard(w) {
     const tagsHTML = w.tags.map(function (tag) {
       return `<span class="tag" data-tag="${tag}" role="button"
-                    tabindex="0" aria-label="Filter by tag: ${tag}">#${tag}</span>`;
+                    tabindex="0" aria-label="Filter by tag: ${tag}">${tag}</span>`;
     }).join('');
 
     return `
@@ -240,7 +240,7 @@ $(document).ready(function () {
                 data-tag="${tag}"
                 aria-pressed="false"
                 aria-label="Filter by tag: ${tag} (${count} writeup${count > 1 ? 's' : ''})">
-          #${tag} <span class="tag-count">${count}</span>
+          ${tag} <span class="tag-count">${count}</span>
         </button>
       `;
     }).join('');

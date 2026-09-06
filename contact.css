@@ -1,7 +1,6 @@
 /* ── Social / contact links ─────────────────────────────────────
    Bootstrap has no built-in "social card link" component, so this
-   is fully custom. Border-radius uses Bootstrap's own --bs-border-radius-lg
-   so it stays in sync with the rest of the theme.                  */
+   is fully custom.                                                 */
 .contact-link {
   display:         flex;
   align-items:     center;
@@ -30,13 +29,14 @@
 
 /* ── Form controls ──────────────────────────────────────────────
    Bootstrap already sets border, background, padding, and base
-   transition on .form-control. We only override:
-     1. font-size — intentionally smaller than Bootstrap's 1rem
-     2. border-radius — rounder than Bootstrap's default 0.375rem
-     3. focus ring — swap Bootstrap's blue for the site accent      */
+   transition on .form-control. We override:
+     1. font-family — monospace, so it reads like typing at a prompt
+     2. font-size — intentionally smaller than Bootstrap's 1rem
+     3. border-radius — sharp, terminal-flat
+     4. focus ring — swap Bootstrap's blue for the site accent      */
 .contact-form .form-control {
   font-family:   var(--font-mono);
-  font-size:     .875rem;
+  font-size:    .875rem;
   border-radius: var(--radius-sm);
 }
 

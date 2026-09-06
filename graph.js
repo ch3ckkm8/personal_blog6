@@ -106,7 +106,7 @@ $(document).ready(function () {
     .attr('dy', function (d) { return d.radius + 10; })
     .attr('text-anchor', 'middle')
     .text(function (d) {
-      const label = d.type === 'tag' ? '#' + d.label : d.label;
+      const label = d.label;
       return label.length > 22 ? label.slice(0, 20) + '…' : label;
     });
 
@@ -189,7 +189,7 @@ $(document).ready(function () {
 
   function renderWriteupPanel(d) {
     const tagsHTML = d.tags.map(function (t) {
-      return `<span class="tag" style="cursor:pointer;" data-jump-tag="${t}">#${t}</span>`;
+      return `<span class="tag" style="cursor:pointer;" data-jump-tag="${t}">${t}</span>`;
     }).join('');
 
     $panel.html(`
@@ -215,7 +215,7 @@ $(document).ready(function () {
 
     $panel.html(`
       <span class="panel-eyebrow">Tag</span>
-      <h3 class="h6 fw-bold mb-2">#${d.label}</h3>
+      <h3 class="h6 fw-bold mb-2">${d.label}</h3>
       <p class="text-muted small mb-2">${related.length} writeup${related.length === 1 ? '' : 's'} tagged with this.</p>
       <ul class="related-list">${listHTML}</ul>
     `);
