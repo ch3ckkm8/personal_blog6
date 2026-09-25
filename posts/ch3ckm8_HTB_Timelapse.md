@@ -2,8 +2,6 @@
 
 ![timelapse_image.png](MediaFiles/timelapse_image.png)
 
- [[windows]] [[NotAssumedBreach]] [[history]] [[laps]]
-
 Tags: #windows #NotAssumedBreach #history #LAPS #easy
 
 Tools used:
