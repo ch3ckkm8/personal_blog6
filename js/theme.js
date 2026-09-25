@@ -94,3 +94,21 @@ window.AccentManager = (function () {
   $(document).on('click', '#accent-palette-toggle', cycle);
   return { apply, cycle, syncButton, palettes };
 }());
+
+window.BackgroundManager = (function () {
+  const palettes = [
+    { id:'default', label:'Default' },
+    { id:'slate', label:'Slate' },
+    { id:'blue', label:'Midnight blue' },
+    { id:'violet', label:'Violet' },
+    { id:'warm', label:'Warm' },
+    { id:'forest', label:'Forest' }
+  ];
+  function current(){ const s=localStorage.getItem('backgroundPalette'); return palettes.some(p=>p.id===s)?s:'default'; }
+  function syncButton(){ const id=document.documentElement.getAttribute('data-background')||current(); const p=palettes.find(x=>x.id===id)||palettes[0]; const b=document.getElementById('background-palette-toggle'); if(!b)return; b.title=`Background: ${p.label} — click to change`; b.setAttribute('aria-label',`Current background ${p.label}. Click to cycle page background`); }
+  function apply(id,persist=true){ const p=palettes.find(x=>x.id===id)||palettes[0]; document.documentElement.setAttribute('data-background',p.id); if(persist)localStorage.setItem('backgroundPalette',p.id); syncButton(); window.dispatchEvent(new CustomEvent('backgroundchange',{detail:{background:p.id}})); }
+  function cycle(){ const id=document.documentElement.getAttribute('data-background')||current(); const i=Math.max(0,palettes.findIndex(p=>p.id===id)); apply(palettes[(i+1)%palettes.length].id); const b=document.getElementById('background-palette-toggle'); if(b){b.classList.add('is-cycling');setTimeout(()=>b.classList.remove('is-cycling'),230);} }
+  apply(current(),false);
+  $(document).on('click','#background-palette-toggle',cycle);
+  return {apply,cycle,syncButton,palettes};
+}());

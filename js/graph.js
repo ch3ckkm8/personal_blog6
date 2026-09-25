@@ -249,7 +249,7 @@ $(document).ready(async function () {
       <div class="graph-file-label mb-2">${d.label}</div>
       <p class="text-muted small mb-2">${d.excerpt}</p>
       <div class="panel-tag-list">${tagsHTML}</div>
-      <a href="${d.slug}" class="btn btn-sm btn-outline-success mt-2">
+      <a href="${d.slug}" class="btn btn-sm btn-outline-accent mt-2">
         Read Writeup <i class="bi bi-arrow-right ms-1" aria-hidden="true"></i>
       </a>
     `);

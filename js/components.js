@@ -29,6 +29,15 @@ $(document).ready(function () {
           <i class="bi bi-palette-fill" aria-hidden="true"></i>
         </button>
 
+        <!-- Background palette: cycles coordinated light/dark page backgrounds -->
+        <button id="background-palette-toggle"
+                type="button"
+                class="btn btn-sm background-palette-toggle me-2"
+                aria-label="Cycle page background"
+                title="Background: Default">
+          <i class="bi bi-display" aria-hidden="true"></i>
+        </button>
+
         <!-- Hamburger — collapses nav on smaller screens -->
         <button class="navbar-toggler"
                 type="button"
@@ -133,6 +142,9 @@ $(document).ready(function () {
   `;
 
   $('#footer-placeholder').html(footerHTML);
+
+  if (window.AccentManager) window.AccentManager.syncButton();
+  if (window.BackgroundManager) window.BackgroundManager.syncButton();
 
   /* ── Sync dark-mode icon now the button is in the DOM ────────── */
   if (window.ThemeManager) {

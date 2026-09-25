@@ -141,7 +141,7 @@ $(document).ready(function () {
               <i class="bi bi-calendar3 me-1" aria-hidden="true"></i>
               ${fmtDate(featured.date)}
             </p>
-            <a href="${featured.slug}" class="btn btn-outline-success">
+            <a href="${featured.slug}" class="btn btn-outline-accent">
               Read Writeup
               <i class="bi bi-arrow-right ms-1" aria-hidden="true"></i>
             </a>
@@ -179,7 +179,7 @@ $(document).ready(function () {
                 ${fmtDate(w.date)}
               </small>
               <a href="${w.slug}"
-                 class="btn btn-sm btn-outline-success"
+                 class="btn btn-sm btn-outline-accent"
                  aria-label="Read writeup: ${w.title}">
                 Read →
               </a>

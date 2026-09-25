@@ -4,7 +4,7 @@
   --accent-dim:  rgba(0, 208, 132, 0.12);
   --font-mono:   'JetBrains Mono', 'Fira Code', ui-monospace, 'SF Mono', Menlo, Consolas, 'Courier New', monospace;
   --transition:  .15s;
-  --radius-sm:   4px;   /* tags, buttons, inputs, badges — sharp, terminal-flat */
+  --radius-sm:   4px;   /* tags, buttons, inputs — sharp, terminal-flat */
   --radius-md:   6px;   /* containers */
 }
 
@@ -33,19 +33,6 @@
    Committing the whole page to the terminal font, not just labels. */
 body {
   font-family: var(--font-mono);
-}
-
-/* ── Bootstrap badges (category / difficulty / status chips used in
-   tasks.js, writeups.js, main.js) ───────────────────────────────
-   Bootstrap's default badge is a rounded pill in a sans font — the
-   single most visible leftover "un-terminal-ed" element on the
-   site before this rule. Keep the bg-* color classes, flatten the
-   shape and switch the type. */
-.badge {
-  font-family:   var(--font-mono);
-  font-weight:   600;
-  border-radius: var(--radius-sm);
-  letter-spacing: 0;
 }
 
 /* ── Terminal-style selection & scrollbar ───────────────────────
@@ -109,7 +96,7 @@ body::before {
 
 /* ── Reusable terminal window chrome ─────────────────────────────
    Wrap any container: <div class="term-window" data-path="~/about.md">
-   Needs one line of HTML per container you want it on. */
+   Needs one line of HTML per container you want it on — see chat. */
 .term-window {
   position: relative;
   border: 1px solid var(--bs-border-color);
@@ -216,3 +203,74 @@ footer { border-top: 1px solid var(--bs-border-color); }
   color:     #000;
   transform: translateY(-1px);
 }
+
+/* ── Site-wide navbar search ─────────────────────────────────── */
+.site-search { position: relative; width: min(360px, 34vw); }
+.site-search-control {
+  height: 36px;
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+  padding: 0 .6rem;
+  border: 1px solid var(--bs-border-color);
+  border-radius: var(--radius-sm);
+  background: color-mix(in srgb, var(--bs-body-bg) 92%, transparent);
+  transition: border-color var(--transition), box-shadow var(--transition);
+}
+.site-search-control:focus-within { border-color: var(--accent); box-shadow: 0 0 0 2px var(--accent-dim); }
+.site-search-control > i { color: var(--bs-secondary-color); font-size: .82rem; }
+.site-search-control input { width: 100%; min-width: 0; border: 0; outline: 0; background: transparent; color: var(--bs-body-color); font: inherit; font-size: .78rem; }
+.site-search-control input::placeholder { color: var(--bs-secondary-color); }
+.site-search-control input::-webkit-search-cancel-button { display: none; }
+.site-search-control kbd { padding: .05rem .35rem; border: 1px solid var(--bs-border-color); border-radius: 3px; background: transparent; color: var(--bs-secondary-color); font-size: .65rem; box-shadow: none; }
+.site-search-results { position: absolute; z-index: 1100; top: calc(100% + .45rem); left: 0; width: min(520px, 88vw); max-height: min(65vh, 520px); overflow-y: auto; border: 1px solid var(--bs-border-color); border-radius: var(--radius-md); background: var(--bs-body-bg); box-shadow: 0 12px 36px rgba(0,0,0,.18); }
+.site-search-result { display: block; padding: .72rem .8rem; border-bottom: 1px solid var(--bs-border-color); color: var(--bs-body-color); text-decoration: none; }
+.site-search-result:last-child { border-bottom: 0; }
+.site-search-result:hover, .site-search-result:focus { background: var(--accent-dim); color: var(--bs-body-color); outline: 0; }
+.site-search-result-top { display: flex; align-items: baseline; justify-content: space-between; gap: .75rem; margin-bottom: .25rem; }
+.site-search-result-top strong { color: var(--accent); font-size: .82rem; }
+.site-search-result-top > span { color: var(--bs-secondary-color); font-size: .62rem; text-transform: uppercase; letter-spacing: .08em; }
+.site-search-result-snippet { display: block; color: var(--bs-secondary-color); font-size: .7rem; line-height: 1.45; }
+.site-search-empty { padding: .8rem; color: var(--bs-secondary-color); font-size: .74rem; }
+@media (max-width: 991.98px) {
+  .site-search { width: 100%; margin-inline: 0 !important; }
+  .site-search-results { width: 100%; position: static; margin-top: .35rem; max-height: 45vh; }
+  .site-search-control kbd { display: none; }
+}
+.site-search-result-section { display:flex; align-items:center; gap:.35rem; margin:-.05rem 0 .28rem; color:var(--bs-secondary-color); font-size:.66rem; font-weight:600; }
+.site-search-result-section i { color:var(--accent); font-size:.62rem; }
+.site-search-result mark { padding:0 .08em; border-radius:2px; background:color-mix(in srgb, var(--accent) 28%, transparent); color:inherit; font-weight:700; }
+
+/* Background palette: independent from accent and paired for light/dark mode. */
+:root {
+  --site-bg-light: #ffffff;
+  --site-bg-dark: #212529;
+  --site-surface-light: #f8f9fa;
+  --site-surface-dark: #2b3035;
+  --site-surface-2-light: #f1f3f5;
+  --site-surface-2-dark: #343a40;
+}
+[data-background="default"] { --site-bg-light:#ffffff; --site-bg-dark:#212529; --site-surface-light:#f8f9fa; --site-surface-dark:#2b3035; --site-surface-2-light:#f1f3f5; --site-surface-2-dark:#343a40; }
+[data-background="slate"]   { --site-bg-light:#f3f6f8; --site-bg-dark:#171c22; --site-surface-light:#e9eef2; --site-surface-dark:#202832; --site-surface-2-light:#dfe6eb; --site-surface-2-dark:#293440; }
+[data-background="blue"]    { --site-bg-light:#f2f7fb; --site-bg-dark:#111b26; --site-surface-light:#e7f0f7; --site-surface-dark:#182737; --site-surface-2-light:#dbe8f2; --site-surface-2-dark:#203448; }
+[data-background="violet"]  { --site-bg-light:#f7f4fa; --site-bg-dark:#1d1823; --site-surface-light:#eee8f3; --site-surface-dark:#292130; --site-surface-2-light:#e5dceb; --site-surface-2-dark:#342a3d; }
+[data-background="warm"]    { --site-bg-light:#faf7f1; --site-bg-dark:#211c17; --site-surface-light:#f1ebe1; --site-surface-dark:#2d261f; --site-surface-2-light:#e9e0d3; --site-surface-2-dark:#393027; }
+[data-background="forest"]  { --site-bg-light:#f3f8f5; --site-bg-dark:#141e19; --site-surface-light:#e7f0ea; --site-surface-dark:#1d2a23; --site-surface-2-light:#dce8e0; --site-surface-2-dark:#27362d; }
+
+[data-bs-theme="light"] { --bs-body-bg:var(--site-bg-light); --bs-tertiary-bg:var(--site-surface-light); --bs-secondary-bg:var(--site-surface-2-light); }
+[data-bs-theme="dark"]  { --bs-body-bg:var(--site-bg-dark); --bs-tertiary-bg:var(--site-surface-dark); --bs-secondary-bg:var(--site-surface-2-dark); }
+html, body { background-color: var(--bs-body-bg); }
+.navbar { background-color: color-mix(in srgb, var(--bs-body-bg) 90%, transparent); }
+
+.background-palette-toggle {
+  color:var(--bs-secondary-color); border:1px solid transparent;
+  transition:color var(--transition), border-color var(--transition), background var(--transition), transform var(--transition);
+}
+.background-palette-toggle:hover,.background-palette-toggle:focus-visible { color:var(--accent); border-color:var(--accent); background:var(--accent-dim); outline:0; }
+.background-palette-toggle:active { transform:scale(.94); }
+.background-palette-toggle i { display:inline-block; transition:transform .22s ease; }
+.background-palette-toggle.is-cycling i { transform:scale(.86) rotate(8deg); }
+
+/* Bootstrap outline buttons that belong to the site's UI follow the chosen accent. */
+.btn-outline-accent { color:var(--accent); border-color:var(--accent); }
+.btn-outline-accent:hover,.btn-outline-accent:focus,.btn-outline-accent:active { color:#000 !important; background-color:var(--accent) !important; border-color:var(--accent) !important; box-shadow:0 0 0 .2rem var(--accent-dim); }
