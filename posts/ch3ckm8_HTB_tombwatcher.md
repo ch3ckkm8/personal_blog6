@@ -5,11 +5,10 @@ Description:
 ```
 As is common in real life Windows pentests, you will start the TombWatcher box with credentials for the following account: henry / H3nry_987TGV!, so its an assumed breach scenario
 ```
-[[windows]] [[AssumedBreach]] [[certificates]] [[certvulntoESC15]] [[RecycleBin]]
-Tags: #windows #AssumedBreach #certificates #certvulntoESC15 #RecycleBin 
+Tags: #windows #AssumedBreach #certificates #certvulntoESC15 #RecycleBin #medium
 Tools used:
 - rpcclient
-- smbclient
+- smbclient}
 - bloodyAD
 - certipy-ad
 - gMSADumper

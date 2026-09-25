@@ -2,7 +2,7 @@
 
 This is a WINDOWS machine of easy difficulty, named TheFrizz, lets begin 
 ![TheFrizz](MediaFiles/TheFrizz.png)
-Tags: #windows #RCE #AD #GSSAPIauthentication #gpo #OSCPpath #NotAssumedBreach 
+Tags: #windows #RCE #AD #GSSAPIauthentication #gpo #OSCPpath #NotAssumedBreach #medium
 Tools used:
 john (password cracking)
 bloodhound-python (AD enumeration)

@@ -5,8 +5,7 @@ Description:
 ```
 As is common in real life Windows pentests, you will start the Fluffy box with credentials for the following account: j.fleischman / J0elTHEM4n1990!, so its an assumed breach scenario
 ```
-[[windows]] [[AssumedBreach]]  [[certificates]] [[certvulntoESC16]] [[shadowcredential]]
-Tags: #windows #AssumedBreach  #certificates #certvulntoESC16 #shadowcredential
+Tags: #windows #AssumedBreach  #certificates #certvulntoESC16 #shadowcredential #easy
 Tools used:
 - smbclient (SMB enumeration)
 - crackmapexec (SMB enumeration)

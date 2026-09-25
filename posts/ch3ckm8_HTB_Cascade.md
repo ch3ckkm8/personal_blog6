@@ -1,7 +1,7 @@
 ## Intro
 
 ![](MediaFiles/Pasted%20image%2020250702081108.png)
-Tags: #windows #NotAssumedBreach #codereview #RecycleBin #OSCPpath 
+Tags: #windows #NotAssumedBreach #codereview #RecycleBin #OSCPpath #medium
 Tools used:
 enum4linux (enumerating smb)
 ldapsearch (ldap enumeration)
