@@ -22,7 +22,31 @@ $(document).ready(async function () {
     Malware: '#ff6b6b',
     Other:   '#a78bfa'
   };
-  const TAG_COLOR = '#9aa3ab';
+  // Give every tag a deterministic, well-spread color. We use the golden
+  // angle instead of Math.random() so colors remain stable across refreshes
+  // while still being distributed around the full hue wheel.
+  function tagHash(value) {
+    let hash = 2166136261;
+    const text = String(value || '').toLowerCase();
+    for (let i = 0; i < text.length; i += 1) {
+      hash ^= text.charCodeAt(i);
+      hash = Math.imul(hash, 16777619);
+    }
+    return hash >>> 0;
+  }
+
+  function assignTagColors(tagNodes) {
+    const GOLDEN_ANGLE = 137.507764;
+    const ordered = tagNodes.slice().sort(function (a, b) {
+      return tagHash(a.label) - tagHash(b.label) || a.label.localeCompare(b.label);
+    });
+
+    ordered.forEach(function (tag, index) {
+      const hue = (23 + index * GOLDEN_ANGLE) % 360;
+      const saturation = 68 + (tagHash(tag.label) % 13);
+      tag.color = `hsl(${hue.toFixed(1)} ${saturation}% 52%)`;
+    });
+  }
 
   // Graph labels come from the Markdown filename rather than the post title.
   // Example: posts/ch3ckm8_HTB_Active.md -> HTB_active
@@ -70,8 +94,10 @@ $(document).ready(async function () {
     });
   });
 
-  // Size tag nodes by how many writeups reference them
+  // Size tag nodes by how many writeups reference them, then assign each
+  // unique tag a balanced color from across the hue spectrum.
   tagIndex.forEach(function (t) { t.radius = 6 + Math.min(t.count * 2, 14); });
+  assignTagColors(Array.from(tagIndex.values()));
 
   /* ── Dynamic tag legend: always reflects the tags in posts/index.json ── */
   const legend = document.getElementById('graph-legend');
@@ -83,7 +109,7 @@ $(document).ready(async function () {
       const item = document.createElement('span');
       const dot = document.createElement('span');
       dot.className = 'legend-dot';
-      dot.style.background = TAG_COLOR;
+      dot.style.background = tag.color;
       item.appendChild(dot);
       item.appendChild(document.createTextNode('#' + tag.label));
       return item.outerHTML;
@@ -131,7 +157,7 @@ $(document).ready(async function () {
   nodeSel.append('circle')
     .attr('r', function (d) { return d.radius; })
     .attr('fill', function (d) {
-      return d.type === 'tag' ? TAG_COLOR : (CATEGORY_COLOR[d.category] || CATEGORY_COLOR.Other);
+      return d.type === 'tag' ? d.color : (CATEGORY_COLOR[d.category] || CATEGORY_COLOR.Other);
     });
 
   nodeSel.append('text')
