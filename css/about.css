@@ -43,67 +43,6 @@
   padding:    1.5rem;
 }
 
-.team-avatar {
-  width:         80px;
-  height:        80px;
-  border-radius: 50%;
-  background-color: var(--bs-secondary-bg);
-  border:        2px solid var(--bs-border-color);
-  display:       flex;
-  align-items:   center;
-  justify-content: center;
-  font-size:     2rem;
-  color:         var(--bs-secondary-color);
-  margin:        0 auto 1rem;
-  transition:    border-color var(--transition);
-}
-
-.team-card:hover .team-avatar { border-color: var(--accent); }
-
-/* ── Carousel ──────────────────────────────────────────────────── */
-#testimonials {
-  padding:    2.5rem 0;
-  border-top: 1px solid var(--bs-border-color-translucent);
-}
-
-.carousel-item blockquote {
-  font-size:   1.05rem;
-  font-style:  italic;
-  line-height: 1.8;
-}
-
-.carousel-control-prev,
-.carousel-control-next {
-  width:   10%;
-  opacity: 0.85;
-}
-
-.carousel-control-prev-icon,
-.carousel-control-next-icon {
-  background-color: rgba(0, 0, 0, 0.45);
-  border-radius:    50%;
-  padding:          1rem;
-  background-size:  50%;
-}
-
-.carousel-control-prev:hover .carousel-control-prev-icon,
-.carousel-control-next:hover .carousel-control-next-icon {
-  background-color: var(--accent);
-}
-
-.testimonial-carousel {
-  padding-bottom: 2.5rem;
-}
-
-.testimonial-slide {
-  padding: 1.5rem 2rem;
-}
-
-.testimonial-text {
-  font-size:   1.05rem;
-  font-style:  italic;
-  line-height: 1.8;
-}
 
 /* ── Timeline ──────────────────────────────────────────────────── */
 #timeline {
@@ -135,4 +74,68 @@
   font-family: var(--font-mono);
   color:       var(--bs-secondary-color);
   margin-bottom: .15rem;
+}
+
+/* ── Famous Quotes ─────────────────────────────────────────────── */
+#famous-quotes {
+  padding: 2.5rem 0;
+  border-top: 1px solid var(--bs-border-color-translucent);
+}
+
+.famous-quote-card {
+  position: relative;
+  overflow: hidden;
+  padding: clamp(1.5rem, 4vw, 2.75rem);
+  border: 1px solid color-mix(in srgb, var(--accent) 32%, var(--bs-border-color));
+  border-radius: 1rem;
+  background: color-mix(in srgb, var(--bs-body-bg) 90%, var(--accent) 10%);
+  box-shadow: 0 1rem 2.5rem rgba(0, 0, 0, .08);
+}
+
+.quote-mark {
+  position: absolute;
+  right: 1.25rem;
+  top: .45rem;
+  font-size: clamp(4rem, 10vw, 7rem);
+  line-height: 1;
+  color: color-mix(in srgb, var(--accent) 16%, transparent);
+  pointer-events: none;
+}
+
+.famous-quote-text {
+  position: relative;
+  max-width: 58rem;
+  font-size: clamp(1.1rem, 2.4vw, 1.55rem);
+  font-weight: 600;
+  line-height: 1.65;
+  letter-spacing: -.015em;
+}
+
+.famous-quote-source {
+  position: relative;
+  color: var(--bs-secondary-color);
+  font-family: var(--font-mono);
+  font-size: .82rem;
+}
+
+.quote-shuffle {
+  color: var(--accent);
+  border: 1px solid color-mix(in srgb, var(--accent) 55%, var(--bs-border-color));
+  background: color-mix(in srgb, var(--bs-body-bg) 88%, var(--accent) 12%);
+}
+
+.quote-shuffle:hover,
+.quote-shuffle:focus-visible {
+  color: var(--bs-body-bg);
+  border-color: var(--accent);
+  background: var(--accent);
+}
+
+.quote-enter { animation: quote-in .28s ease-out; }
+@keyframes quote-in {
+  from { opacity: .2; transform: translateY(5px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .quote-enter { animation: none; }
 }
