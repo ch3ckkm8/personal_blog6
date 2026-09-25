@@ -162,6 +162,81 @@ $(document).ready(async function () {
       if (href && !/^(?:[a-z]+:|\/|#)/i.test(href)) $(this).attr('href', new URL(href, postUrl.href).href);
     });
 
+    // Search-result deep links: highlight the exact matched text and scroll to it.
+    // `section` identifies the Markdown section; `q` carries the user's search text.
+    const readerParams = new URLSearchParams(window.location.search);
+    const searchQuery = (readerParams.get('q') || '').trim();
+    const requestedSection = (readerParams.get('section') || '').trim();
+
+    if (searchQuery || requestedSection || window.location.hash) {
+      window.requestAnimationFrame(function () {
+        let scope = $content.get(0);
+        const sectionId = requestedSection || (window.location.hash ? decodeURIComponent(window.location.hash.slice(1)) : '');
+        const sectionHeading = sectionId ? document.getElementById(sectionId) : null;
+
+        if (sectionHeading) {
+          // Limit matching to this heading and its content, stopping at the next
+          // heading of the same or higher level.
+          const level = Number(sectionHeading.tagName.slice(1));
+          const wrapper = document.createElement('div');
+          let node = sectionHeading;
+          while (node) {
+            const next = node.nextElementSibling;
+            wrapper.appendChild(node.cloneNode(true));
+            if (!next) break;
+            if (/^H[1-6]$/.test(next.tagName) && Number(next.tagName.slice(1)) <= level) break;
+            node = next;
+          }
+          scope = sectionHeading.parentElement;
+        }
+
+        let matchElement = null;
+        if (searchQuery) {
+          const terms = [searchQuery].concat(searchQuery.split(/\s+/)).filter(Boolean).sort(function (a,b) { return b.length-a.length; });
+          const root = sectionHeading ? sectionHeading.parentElement : $content.get(0);
+          const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
+            acceptNode: function (node) {
+              const parent = node.parentElement;
+              if (!parent || parent.closest('script, style, .code-copy-btn')) return NodeFilter.FILTER_REJECT;
+              if (sectionHeading) {
+                // Only accept nodes between this heading and the next peer/ancestor heading.
+                let cursor = parent.closest('h1,h2,h3,h4,h5,h6') || parent;
+                const position = sectionHeading.compareDocumentPosition(cursor);
+                if (position & Node.DOCUMENT_POSITION_PRECEDING) return NodeFilter.FILTER_REJECT;
+                let prev = cursor;
+                while (prev && prev !== sectionHeading) {
+                  if (/^H[1-6]$/.test(prev.tagName) && Number(prev.tagName.slice(1)) <= Number(sectionHeading.tagName.slice(1))) return NodeFilter.FILTER_REJECT;
+                  prev = prev.previousElementSibling;
+                }
+              }
+              return node.nodeValue.trim() ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT;
+            }
+          });
+          let textNode;
+          while ((textNode = walker.nextNode()) && !matchElement) {
+            const lower = textNode.nodeValue.toLocaleLowerCase();
+            for (const term of terms) {
+              const at = lower.indexOf(term.toLocaleLowerCase());
+              if (at === -1) continue;
+              const range = document.createRange();
+              range.setStart(textNode, at);
+              range.setEnd(textNode, at + term.length);
+              const mark = document.createElement('mark');
+              mark.className = 'search-hit';
+              mark.id = 'search-hit';
+              try { range.surroundContents(mark); matchElement = mark; } catch (_) {}
+              break;
+            }
+          }
+        }
+
+        const destination = matchElement || sectionHeading;
+        if (destination) {
+          setTimeout(function () { destination.scrollIntoView({ behavior: 'smooth', block: 'center' }); }, 60);
+        }
+      });
+    }
+
     $outline.on('click', 'a[href^="#"]', function (event) {
       const id = decodeURIComponent(this.hash.slice(1));
       const target = document.getElementById(id);

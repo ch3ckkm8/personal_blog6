@@ -264,3 +264,6 @@ footer { border-top: 1px solid var(--bs-border-color); }
   .site-search-results { width: 100%; position: static; margin-top: .35rem; max-height: 45vh; }
   .site-search-control kbd { display: none; }
 }
+.site-search-result-section { display:flex; align-items:center; gap:.35rem; margin:-.05rem 0 .28rem; color:var(--bs-secondary-color); font-size:.66rem; font-weight:600; }
+.site-search-result-section i { color:var(--accent); font-size:.62rem; }
+.site-search-result mark { padding:0 .08em; border-radius:2px; background:color-mix(in srgb, var(--accent) 28%, transparent); color:inherit; font-weight:700; }
