@@ -27,6 +27,40 @@ $(document).ready(async function () {
     const html = DOMPurify.sanitize(marked.parse(post.content));
     $content.html(html).removeClass('d-none');
 
+    // Syntax highlighting + one-click copy buttons for fenced Markdown code blocks.
+    $content.find('pre').each(function () {
+      const pre = this;
+      const code = pre.querySelector('code');
+      if (!code) return;
+
+      if (typeof hljs !== 'undefined') {
+        hljs.highlightElement(code);
+      }
+
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.className = 'code-copy-btn';
+      button.setAttribute('aria-label', 'Copy code');
+      button.setAttribute('title', 'Copy code');
+      button.innerHTML = '<i class="bi bi-clipboard"></i><span>Copy</span>';
+
+      button.addEventListener('click', async function () {
+        try {
+          await navigator.clipboard.writeText(code.textContent);
+          button.classList.add('copied');
+          button.innerHTML = '<i class="bi bi-check2"></i><span>Copied!</span>';
+          setTimeout(function () {
+            button.classList.remove('copied');
+            button.innerHTML = '<i class="bi bi-clipboard"></i><span>Copy</span>';
+          }, 1600);
+        } catch (error) {
+          console.error('[reader] Could not copy code', error);
+        }
+      });
+
+      pre.appendChild(button);
+    });
+
     // Assets referenced by Markdown are relative to posts/<filename>.md.
     const postUrl = new URL(file, window.location.href);
     postUrl.search = '';
