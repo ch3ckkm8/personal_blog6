@@ -1,1 +1,16 @@
-[]
+[
+  {
+    "title": "Active - Hack The Box Writeup",
+    "file": "posts/ch3ckm8_HTB_Active.md",
+    "category": "Hack The Box",
+    "tags": [
+      "windows",
+      "Kerberoasting",
+      "OSCPpath"
+    ],
+    "date": "2026-09-25",
+    "difficulty": "Easy",
+    "excerpt": "Tags: windows NotAssumedBreach Kerberoasting OSCPpath Tools used: GetUserSPNs.py (Kerberoasting) Hashcat (cracking) smbclient / smbmap / nxc (smb enumeration) psexec.py (shell over smb)",
+    "featured": true
+  }
+]

@@ -16,6 +16,15 @@ $(document).ready(async function () {
     markdown = markdown.replace(/^---\s*\n[\s\S]*?\n---\s*\n?/, '');
     const html = DOMPurify.sanitize(marked.parse(markdown));
     $content.html(html).removeClass('d-none');
+
+    // Markdown image/link paths are relative to the Markdown file, not reader.html.
+    const postDir = file.slice(0, file.lastIndexOf('/') + 1);
+    $content.find('img').each(function () {
+      const src = $(this).attr('src') || '';
+      if (src && !/^(?:[a-z]+:|\/|#)/i.test(src)) {
+        $(this).attr('src', postDir + src);
+      }
+    });
     $status.addClass('d-none');
     const heading = $content.find('h1').first().text().trim();
     if (heading) document.title = heading + ' | 0xnotes';
