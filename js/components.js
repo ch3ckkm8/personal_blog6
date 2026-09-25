@@ -154,4 +154,87 @@ $(document).ready(function () {
 
   if (window.SiteSearch) window.SiteSearch.init();
 
+
+  /* ── Persistent Markdown scratchpad ─────────────────────────── */
+  (function initMarkdownScratchpad() {
+    if (document.getElementById('markdown-note-toggle')) return;
+
+    const STORAGE_KEY = 'ch3ckm8-markdown-note';
+    const OPEN_KEY = 'ch3ckm8-markdown-note-open';
+
+    const noteHTML = `
+      <button id="markdown-note-toggle" class="markdown-note-toggle" type="button"
+              aria-label="Toggle Markdown notes" aria-controls="markdown-note-panel"
+              aria-expanded="false" title="Markdown notes">
+        <i class="bi bi-journal-text" aria-hidden="true"></i>
+      </button>
+      <aside id="markdown-note-panel" class="markdown-note-panel" aria-label="Markdown scratchpad" hidden>
+        <div class="markdown-note-header">
+          <strong><i class="bi bi-markdown me-1" aria-hidden="true"></i> Notes</strong>
+          <div class="markdown-note-actions" role="tablist" aria-label="Note mode">
+            <button type="button" class="markdown-note-mode active" data-note-mode="edit" aria-selected="true">Edit</button>
+            <button type="button" class="markdown-note-mode" data-note-mode="preview" aria-selected="false">Preview</button>
+          </div>
+        </div>
+        <textarea id="markdown-note-editor" class="markdown-note-editor" spellcheck="true"
+                  aria-label="Markdown notes" placeholder="Write Markdown here..."></textarea>
+        <div id="markdown-note-preview" class="markdown-note-preview markdown-body" hidden></div>
+        <div class="markdown-note-footer"><span>Saved locally</span><span>Markdown supported</span></div>
+      </aside>`;
+
+    document.body.insertAdjacentHTML('beforeend', noteHTML);
+    const toggle = document.getElementById('markdown-note-toggle');
+    const panel = document.getElementById('markdown-note-panel');
+    const editor = document.getElementById('markdown-note-editor');
+    const preview = document.getElementById('markdown-note-preview');
+    const modeButtons = Array.from(panel.querySelectorAll('[data-note-mode]'));
+
+    editor.value = localStorage.getItem(STORAGE_KEY) || '';
+
+    function setOpen(open) {
+      panel.hidden = !open;
+      toggle.setAttribute('aria-expanded', String(open));
+      toggle.classList.toggle('is-open', open);
+      localStorage.setItem(OPEN_KEY, open ? '1' : '0');
+      if (open && !preview.hidden) renderPreview();
+    }
+
+    function escapeHtml(value) {
+      return value.replace(/[&<>\"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;'}[c]));
+    }
+
+    function renderPreview() {
+      const md = editor.value;
+      if (window.marked) {
+        const html = window.marked.parse(md, { gfm: true, breaks: true });
+        preview.innerHTML = window.DOMPurify ? window.DOMPurify.sanitize(html) : html;
+      } else {
+        preview.innerHTML = '<pre>' + escapeHtml(md) + '</pre>';
+      }
+    }
+
+    toggle.addEventListener('click', function () { setOpen(panel.hidden); });
+    editor.addEventListener('input', function () {
+      localStorage.setItem(STORAGE_KEY, editor.value);
+      if (!preview.hidden) renderPreview();
+    });
+
+    modeButtons.forEach(function (button) {
+      button.addEventListener('click', function () {
+        const previewMode = button.dataset.noteMode === 'preview';
+        modeButtons.forEach(b => {
+          const active = b === button;
+          b.classList.toggle('active', active);
+          b.setAttribute('aria-selected', String(active));
+        });
+        editor.hidden = previewMode;
+        preview.hidden = !previewMode;
+        if (previewMode) renderPreview(); else editor.focus();
+      });
+    });
+
+    // Preserve the user's open/collapsed state while navigating between pages.
+    setOpen(localStorage.getItem(OPEN_KEY) === '1');
+  })();
+
 });
