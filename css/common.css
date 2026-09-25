@@ -399,3 +399,18 @@ html, body { background-color: var(--bs-body-bg); }
 [data-background="city"] .navbar { backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px); }
 [data-background="city"] main, [data-background="city"] .card, [data-background="city"] .reader-wrap, [data-background="city"] .site-search-results { backdrop-filter:blur(7px); -webkit-backdrop-filter:blur(7px); }
 @media (prefers-reduced-motion: reduce) { .city-window { transition:none !important; } }
+
+
+/* Obsidian-style Markdown ==highlight== */
+.md-highlight {
+  background: color-mix(in srgb, #ffd54a 72%, var(--surface, #fff));
+  color: #241b00;
+  padding: 0.08em 0.22em;
+  border-radius: 0.22em;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
+[data-theme="dark"] .md-highlight {
+  background: color-mix(in srgb, #ffd54a 62%, #3b3100);
+  color: #fff7cf;
+}

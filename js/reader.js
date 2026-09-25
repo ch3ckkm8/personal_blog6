@@ -1,3 +1,23 @@
+
+function enableMarkdownHighlights(markedApi) {
+  if (!markedApi || markedApi.__checkm8HighlightEnabled) return;
+  markedApi.use({
+    extensions: [{
+      name: 'checkm8Highlight',
+      level: 'inline',
+      start(src) { return src.indexOf('=='); },
+      tokenizer(src) {
+        const match = /^==(?=\S)([\s\S]*?\S)==/.exec(src);
+        if (!match) return;
+        return { type: 'checkm8Highlight', raw: match[0], text: match[1], tokens: this.lexer.inlineTokens(match[1]) };
+      },
+      renderer(token) {
+        return '<mark class=\"md-highlight\">' + this.parser.parseInline(token.tokens) + '</mark>';
+      }
+    }]
+  });
+  markedApi.__checkm8HighlightEnabled = true;
+}
 $(document).ready(async function () {
   const $status = $('#reader-status');
   const $content = $('#markdown-content');
@@ -27,6 +47,7 @@ $(document).ready(async function () {
     if (typeof marked === 'undefined') throw new Error('The Markdown renderer failed to load.');
     if (typeof DOMPurify === 'undefined') throw new Error('The HTML sanitizer failed to load.');
 
+    enableMarkdownHighlights(marked);
     const html = DOMPurify.sanitize(marked.parse(post.content));
     $content.html(html);
 

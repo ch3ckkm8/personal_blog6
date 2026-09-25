@@ -1,3 +1,23 @@
+
+function enableMarkdownHighlights(markedApi) {
+  if (!markedApi || markedApi.__checkm8HighlightEnabled) return;
+  markedApi.use({
+    extensions: [{
+      name: 'checkm8Highlight',
+      level: 'inline',
+      start(src) { return src.indexOf('=='); },
+      tokenizer(src) {
+        const match = /^==(?=\S)([\s\S]*?\S)==/.exec(src);
+        if (!match) return;
+        return { type: 'checkm8Highlight', raw: match[0], text: match[1], tokens: this.lexer.inlineTokens(match[1]) };
+      },
+      renderer(token) {
+        return '<mark class=\"md-highlight\">' + this.parser.parseInline(token.tokens) + '</mark>';
+      }
+    }]
+  });
+  markedApi.__checkm8HighlightEnabled = true;
+}
 $(document).ready(function () {
 
   /* ── Navbar HTML ─────────────────────────────────────────────── */
@@ -242,6 +262,7 @@ $(document).ready(function () {
       preview.innerHTML = '<p class="markdown-note-status">Rendering preview…</p>';
       try {
         await ensureMarkdownLibraries();
+        enableMarkdownHighlights(window.marked);
         const html = window.marked.parse(md, { gfm: true, breaks: true });
         preview.innerHTML = window.DOMPurify.sanitize(html);
       } catch (error) {

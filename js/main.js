@@ -1,3 +1,23 @@
+
+function enableMarkdownHighlights(markedApi) {
+  if (!markedApi || markedApi.__checkm8HighlightEnabled) return;
+  markedApi.use({
+    extensions: [{
+      name: 'checkm8Highlight',
+      level: 'inline',
+      start(src) { return src.indexOf('=='); },
+      tokenizer(src) {
+        const match = /^==(?=\S)([\s\S]*?\S)==/.exec(src);
+        if (!match) return;
+        return { type: 'checkm8Highlight', raw: match[0], text: match[1], tokens: this.lexer.inlineTokens(match[1]) };
+      },
+      renderer(token) {
+        return '<mark class=\"md-highlight\">' + this.parser.parseInline(token.tokens) + '</mark>';
+      }
+    }]
+  });
+  markedApi.__checkm8HighlightEnabled = true;
+}
 $(document).ready(function () {});
 
 /* ── Editable homepage Markdown ───────────────────────────────── */
@@ -34,6 +54,7 @@ $(document).ready(function () {});
       }
 
       const markdown = await response.text();
+      enableMarkdownHighlights(marked);
       const rendered = marked.parse(markdown, { gfm: true, breaks: false });
       target.innerHTML = DOMPurify.sanitize(rendered, { USE_PROFILES: { html: true } });
       routePostLinks(target);
