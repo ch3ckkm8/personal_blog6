@@ -32,6 +32,14 @@ $(document).ready(function () {
         </button>
 
         <div class="collapse navbar-collapse" id="mainNav">
+          <div class="site-search ms-lg-3 me-lg-3 my-2 my-lg-0" role="search">
+            <div class="site-search-control">
+              <i class="bi bi-search" aria-hidden="true"></i>
+              <input id="site-search-input" type="search" autocomplete="off" spellcheck="false" placeholder="Search site…" aria-label="Search all pages and writeups" aria-controls="site-search-results">
+              <kbd>/</kbd>
+            </div>
+            <div id="site-search-results" class="site-search-results" hidden aria-live="polite"></div>
+          </div>
           <ul class="navbar-nav ms-auto" role="list">
             <li class="nav-item">
               <a class="nav-link" href="index.html">Home</a>
@@ -133,5 +141,7 @@ $(document).ready(function () {
   if (window.ThemeManager) {
     window.ThemeManager.updateIcon($('html').attr('data-bs-theme') || 'light');
   }
+
+  if (window.SiteSearch) window.SiteSearch.init();
 
 });
