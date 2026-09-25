@@ -203,13 +203,52 @@ $(document).ready(function () {
       return value.replace(/[&<>\"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;'}[c]));
     }
 
-    function renderPreview() {
+    let markdownLibrariesPromise = null;
+
+    function loadScriptOnce(src, globalName) {
+      if (window[globalName]) return Promise.resolve();
+      return new Promise((resolve, reject) => {
+        const existing = Array.from(document.scripts).find(script => script.src === src);
+        if (existing) {
+          existing.addEventListener('load', resolve, { once: true });
+          existing.addEventListener('error', reject, { once: true });
+          return;
+        }
+        const script = document.createElement('script');
+        script.src = src;
+        script.onload = resolve;
+        script.onerror = reject;
+        document.head.appendChild(script);
+      });
+    }
+
+    function ensureMarkdownLibraries() {
+      if (window.marked && window.DOMPurify) return Promise.resolve();
+      if (!markdownLibrariesPromise) {
+        markdownLibrariesPromise = Promise.all([
+          loadScriptOnce('https://cdn.jsdelivr.net/npm/marked/marked.min.js', 'marked'),
+          loadScriptOnce('https://cdn.jsdelivr.net/npm/dompurify@3.2.6/dist/purify.min.js', 'DOMPurify')
+        ]).catch(error => {
+          markdownLibrariesPromise = null;
+          throw error;
+        });
+      }
+      return markdownLibrariesPromise;
+    }
+
+    async function renderPreview() {
       const md = editor.value;
-      if (window.marked) {
+      preview.classList.add('is-loading');
+      preview.innerHTML = '<p class="markdown-note-status">Rendering preview…</p>';
+      try {
+        await ensureMarkdownLibraries();
         const html = window.marked.parse(md, { gfm: true, breaks: true });
-        preview.innerHTML = window.DOMPurify ? window.DOMPurify.sanitize(html) : html;
-      } else {
-        preview.innerHTML = '<pre>' + escapeHtml(md) + '</pre>';
+        preview.innerHTML = window.DOMPurify.sanitize(html);
+      } catch (error) {
+        console.error('Markdown scratchpad preview failed:', error);
+        preview.innerHTML = '<p class="markdown-note-status">Preview could not be rendered. Your note is still saved.</p>';
+      } finally {
+        preview.classList.remove('is-loading');
       }
     }
 
