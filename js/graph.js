@@ -146,6 +146,9 @@ $(document).ready(async function () {
     .data(nodes)
     .join('g')
     .attr('class', 'graph-node')
+    .attr('tabindex', 0)
+    .attr('role', 'button')
+    .attr('aria-label', function (d) { return d.type === 'tag' ? 'Tag ' + d.label : 'Writeup ' + d.label; })
     .call(drag());
 
   nodeSel.append('circle')

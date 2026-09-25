@@ -274,3 +274,57 @@ html, body { background-color: var(--bs-body-bg); }
 /* Bootstrap outline buttons that belong to the site's UI follow the chosen accent. */
 .btn-outline-accent { color:var(--accent); border-color:var(--accent); }
 .btn-outline-accent:hover,.btn-outline-accent:focus,.btn-outline-accent:active { color:#000 !important; background-color:var(--accent) !important; border-color:var(--accent) !important; box-shadow:0 0 0 .2rem var(--accent-dim); }
+
+/* ── Spatial keyboard navigation ─────────────────────────────── */
+.keyboard-nav-current {
+  outline: 2px solid var(--accent) !important;
+  outline-offset: 3px !important;
+  box-shadow: 0 0 0 4px var(--accent-dim) !important;
+  border-radius: max(3px, var(--radius-sm));
+}
+.graph-node.keyboard-nav-current { outline: none !important; box-shadow: none !important; }
+.graph-node.keyboard-nav-current circle {
+  stroke: var(--accent) !important;
+  stroke-width: 3px !important;
+  filter: drop-shadow(0 0 6px var(--accent));
+}
+.graph-node:focus { outline: none; }
+
+.keyboard-nav-hud {
+  position: fixed;
+  left: 16px;
+  bottom: 16px;
+  z-index: 1400;
+  display: inline-flex;
+  align-items: center;
+  gap: .42rem;
+  min-height: 34px;
+  padding: .42rem .58rem;
+  border: 1px solid color-mix(in srgb, var(--bs-border-color) 85%, transparent);
+  border-radius: 9px;
+  background: color-mix(in srgb, var(--bs-body-bg) 88%, transparent);
+  color: var(--bs-secondary-color);
+  box-shadow: 0 5px 18px rgba(0,0,0,.12);
+  backdrop-filter: blur(8px);
+  opacity: .52;
+  pointer-events: none;
+  transition: opacity .18s ease, color .18s ease, border-color .18s ease, box-shadow .18s ease, transform .18s ease;
+}
+.keyboard-nav-hud i { font-size: 1rem; }
+.keyboard-nav-key {
+  min-width: 1.7rem;
+  font: 700 .6rem/1 var(--bs-font-monospace, monospace);
+  letter-spacing: .04em;
+  text-align: center;
+}
+.keyboard-nav-hud.is-active {
+  opacity: 1;
+  color: var(--accent);
+  border-color: var(--accent);
+  background: color-mix(in srgb, var(--bs-body-bg) 80%, var(--accent) 20%);
+  box-shadow: 0 0 0 3px var(--accent-dim), 0 6px 22px rgba(0,0,0,.18);
+  transform: translateY(-2px);
+}
+@media (max-width: 575.98px) {
+  .keyboard-nav-hud { left: 10px; bottom: 10px; }
+}
