@@ -29,6 +29,35 @@
     let activeTag = requestedTag && WRITEUPS.some(function (w) { return (w.tags || []).includes(requestedTag); }) ? requestedTag : null;
     let searchQuery = '';
     const diffClass = { Easy: 'bg-success', Medium: 'bg-warning text-dark', Hard: 'bg-danger' };
+    let tagColors = new Map();
+
+    // Keep tag colors identical to the knowledge graph. The complete current
+    // tag set is sorted by the same deterministic hash and spread around the
+    // hue wheel with the golden angle.
+    function tagHash(value) {
+      let hash = 2166136261;
+      const text = String(value || '').toLowerCase();
+      for (let i = 0; i < text.length; i += 1) {
+        hash ^= text.charCodeAt(i);
+        hash = Math.imul(hash, 16777619);
+      }
+      return hash >>> 0;
+    }
+    function buildTagColors(tags) {
+      const GOLDEN_ANGLE = 137.507764;
+      const ordered = tags.slice().sort(function (a, b) {
+        return tagHash(a) - tagHash(b) || a.localeCompare(b);
+      });
+      tagColors = new Map();
+      ordered.forEach(function (tag, index) {
+        const hue = (23 + index * GOLDEN_ANGLE) % 360;
+        const saturation = 68 + (tagHash(tag) % 13);
+        tagColors.set(tag, `hsl(${hue.toFixed(1)} ${saturation}% 52%)`);
+      });
+    }
+    function tagStyle(tag) {
+      return `--tag-color:${tagColors.get(tag) || 'var(--accent)'}`;
+    }
 
     function escapeHtml(value) {
       return $('<div>').text(String(value == null ? '' : value)).html();
@@ -40,7 +69,7 @@
     function tagsHtml(tags) {
       return (tags || []).map(function (tag) {
         const safe = escapeHtml(tag);
-        return `<span class="tag" data-tag="${safe}" role="button" tabindex="0" aria-label="Filter by tag: ${safe}">${safe}</span>`;
+        return `<span class="tag colored-tag" style="${tagStyle(tag)}" data-tag="${safe}" role="button" tabindex="0" aria-label="Filter by tag: ${safe}">${safe}</span>`;
       }).join('');
     }
     function renderFeatured() {
@@ -71,16 +100,17 @@
     }
     function buildTagFilters() {
       const tags = getTagCounts();
+      buildTagColors(tags.map(function (e) { return e[0]; }));
       $('#search-tag-filters').html(
         '<button class="filter-btn active" data-tag="" aria-pressed="true">All</button>' +
         tags.map(function (e) {
           const t = escapeHtml(e[0]);
-          return `<button class="filter-btn" data-tag="${t}" aria-pressed="false">${t} <span class="tag-count">${e[1]}</span></button>`;
+          return `<button class="filter-btn colored-tag" style="${tagStyle(e[0])}" data-tag="${t}" aria-pressed="false">${t} <span class="tag-count">${e[1]}</span></button>`;
         }).join('')
       );
       $('#tag-cloud').html(tags.map(function (e) {
         const t = escapeHtml(e[0]);
-        return `<button class="tag-cloud-item" data-tag="${t}" aria-pressed="false">${t} <span class="tag-count">${e[1]}</span></button>`;
+        return `<button class="tag-cloud-item colored-tag" style="${tagStyle(e[0])}" data-tag="${t}" aria-pressed="false">${t} <span class="tag-count">${e[1]}</span></button>`;
       }).join(''));
     }
     function syncTagControls() {
@@ -98,7 +128,10 @@
       $('#writeup-grid').html('');
       $('#writeup-empty').removeClass('d-none').find('p').html('No published writeups yet. Add <code>.md</code> files to <code>posts/</code>; the GitHub Pages workflow will index them automatically.');
       $('#writeup-count').text('0 writeups');
-    } else { renderFeatured(); buildTagFilters(); syncTagControls(); renderGrid(); }
+    } else {
+      buildTagColors(getTagCounts().map(function (e) { return e[0]; }));
+      renderFeatured(); buildTagFilters(); syncTagControls(); renderGrid();
+    }
 
     $(document).on('click', '.filter-btn', function () { activeTag=$(this).data('tag') || null; syncTagControls(); renderGrid(); });
     $(document).on('click', '.tag-cloud-item', function () { const tag=$(this).data('tag'); activeTag=activeTag===tag?null:tag; syncTagControls(); renderGrid(); });
