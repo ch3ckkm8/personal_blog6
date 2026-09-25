@@ -102,12 +102,37 @@ window.BackgroundManager = (function () {
     { id:'blue', label:'Midnight blue' },
     { id:'violet', label:'Violet' },
     { id:'warm', label:'Warm' },
-    { id:'forest', label:'Forest' }
+    { id:'forest', label:'Forest' },
+    { id:'city', label:'Night City' }
   ];
   function current(){ const s=localStorage.getItem('backgroundPalette'); return palettes.some(p=>p.id===s)?s:'default'; }
   function syncButton(){ const id=document.documentElement.getAttribute('data-background')||current(); const p=palettes.find(x=>x.id===id)||palettes[0]; const b=document.getElementById('background-palette-toggle'); if(!b)return; b.title=`Background: ${p.label} — click to change`; b.setAttribute('aria-label',`Current background ${p.label}. Click to cycle page background`); }
   function apply(id,persist=true){ const p=palettes.find(x=>x.id===id)||palettes[0]; document.documentElement.setAttribute('data-background',p.id); if(persist)localStorage.setItem('backgroundPalette',p.id); syncButton(); window.dispatchEvent(new CustomEvent('backgroundchange',{detail:{background:p.id}})); }
   function cycle(){ const id=document.documentElement.getAttribute('data-background')||current(); const i=Math.max(0,palettes.findIndex(p=>p.id===id)); apply(palettes[(i+1)%palettes.length].id); const b=document.getElementById('background-palette-toggle'); if(b){b.classList.add('is-cycling');setTimeout(()=>b.classList.remove('is-cycling'),230);} }
+  let cityTimer = null;
+  function ensureCityScene(){
+    let scene=document.getElementById('night-city-scene');
+    if(scene) return scene;
+    scene=document.createElement('div'); scene.id='night-city-scene'; scene.setAttribute('aria-hidden','true');
+    scene.innerHTML='<div class="night-city-room"><div class="night-city-window"><div class="night-city-skyline"></div></div></div>';
+    document.body.appendChild(scene);
+    const skyline=scene.querySelector('.night-city-skyline');
+    const specs=[[0,16,43],[9,13,55],[18,18,37],[30,12,67],[39,17,49],[53,11,72],[62,16,42],[75,13,61],[85,16,48],[94,9,69]];
+    specs.forEach((sp,bi)=>{ const b=document.createElement('div'); b.className='city-building'; b.style.left=sp[0]+'%'; b.style.width=sp[1]+'%'; b.style.height=sp[2]+'%'; skyline.appendChild(b);
+      const cols=Math.max(2,Math.floor(sp[1]/2.3)), rows=Math.max(3,Math.floor(sp[2]/7));
+      for(let r=0;r<rows;r++) for(let c=0;c<cols;c++){ if(Math.random()<.18) continue; const w=document.createElement('span'); w.className='city-window'; w.style.left=(10+c*(80/Math.max(1,cols-1)))+'%'; w.style.top=(10+r*(78/Math.max(1,rows-1)))+'%'; if(Math.random()<.28) w.classList.add(Math.random()<.58?'warm':'cyan'); if(Math.random()<.3) w.classList.add('on'); b.appendChild(w); }
+    }); return scene;
+  }
+  function updateCityAnimation(){
+    if(cityTimer){clearInterval(cityTimer);cityTimer=null;}
+    if((document.documentElement.getAttribute('data-background')||current())!=='city') return;
+    const scene=ensureCityScene(), windows=[...scene.querySelectorAll('.city-window')];
+    if(window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    cityTimer=setInterval(()=>{ const n=1+Math.floor(Math.random()*3); for(let i=0;i<n;i++){ const w=windows[Math.floor(Math.random()*windows.length)]; if(w) w.classList.toggle('on'); } },2600+Math.floor(Math.random()*1400));
+  }
+  const oldApply=apply;
+  apply=function(id,persist=true){ oldApply(id,persist); if(id==='city') ensureCityScene(); updateCityAnimation(); };
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',()=>{ if(current()==='city') ensureCityScene(); updateCityAnimation(); }); else { if(current()==='city') ensureCityScene(); updateCityAnimation(); }
   apply(current(),false);
   $(document).on('click','#background-palette-toggle',cycle);
   return {apply,cycle,syncButton,palettes};
