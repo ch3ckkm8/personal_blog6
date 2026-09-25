@@ -59,6 +59,7 @@ for path in sorted(POSTS.glob('*.md')):
         'difficulty': meta.get('difficulty', 'N/A'),
         'excerpt': meta.get('excerpt') or excerpt(body),
         'featured': bool(meta.get('featured', False)),
+        'content': body,
     })
 
 OUT.write_text(json.dumps(items, indent=2, ensure_ascii=False) + '\n', encoding='utf-8')
