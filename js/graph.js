@@ -24,6 +24,18 @@ $(document).ready(async function () {
   };
   const TAG_COLOR = '#9aa3ab';
 
+  // Graph labels come from the Markdown filename rather than the post title.
+  // Example: posts/ch3ckm8_HTB_Active.md -> HTB_active
+  function graphLabelFromFile(file, fallback) {
+    const filename = String(file || '').split('/').pop().replace(/\.md$/i, '');
+    const withoutAuthorPrefix = filename.replace(/^ch3ckm8_/i, '');
+    if (!withoutAuthorPrefix) return fallback || filename || 'writeup';
+
+    const parts = withoutAuthorPrefix.split('_');
+    if (parts.length === 1) return parts[0];
+    return parts[0].toUpperCase() + '_' + parts.slice(1).join('_').toLowerCase();
+  }
+
   /* ── Build nodes + links from the writeup data ─────────────────── */
   const nodes = [];
   const links = [];
@@ -33,7 +45,9 @@ $(document).ready(async function () {
     const writeupNode = {
       id: 'w' + i,
       type: 'writeup',
-      label: w.title,
+      label: graphLabelFromFile(w.file, w.title),
+      title: w.title,
+      file: w.file,
       category: w.category,
       difficulty: w.difficulty,
       excerpt: w.excerpt,
@@ -58,6 +72,24 @@ $(document).ready(async function () {
 
   // Size tag nodes by how many writeups reference them
   tagIndex.forEach(function (t) { t.radius = 6 + Math.min(t.count * 2, 14); });
+
+  /* ── Dynamic tag legend: always reflects the tags in posts/index.json ── */
+  const legend = document.getElementById('graph-legend');
+  if (legend) {
+    const tags = Array.from(tagIndex.values()).sort(function (a, b) {
+      return b.count - a.count || a.label.localeCompare(b.label);
+    });
+    legend.innerHTML = tags.map(function (tag) {
+      const item = document.createElement('span');
+      const dot = document.createElement('span');
+      dot.className = 'legend-dot';
+      dot.style.background = TAG_COLOR;
+      item.appendChild(dot);
+      item.appendChild(document.createTextNode('#' + tag.label));
+      return item.outerHTML;
+    }).join('');
+    legend.hidden = tags.length === 0;
+  }
 
   /* ── Build adjacency map for quick highlight lookups ───────────── */
   const neighborMap = new Map();
@@ -194,7 +226,8 @@ $(document).ready(async function () {
 
     $panel.html(`
       <span class="panel-eyebrow">${d.category} &middot; ${d.difficulty}</span>
-      <h3 class="h6 fw-bold mb-2">${d.label}</h3>
+      <h3 class="h6 fw-bold mb-1">${d.title || d.label}</h3>
+      <div class="graph-file-label mb-2">${d.label}</div>
       <p class="text-muted small mb-2">${d.excerpt}</p>
       <div class="panel-tag-list">${tagsHTML}</div>
       <a href="${d.slug}" class="btn btn-sm btn-outline-success mt-2">

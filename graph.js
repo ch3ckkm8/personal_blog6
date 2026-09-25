@@ -9,12 +9,12 @@
  * Nodes:  one per writeup + one per unique tag
  * Links:  writeup <-> each of its tags
  */
-$(document).ready(function () {
+$(document).ready(async function () {
 
   const stage = document.getElementById('knowledge-graph');
   if (!stage) return; // not on the graph page
 
-  const WRITEUPS = window.SITE_WRITEUPS || [];
+  const WRITEUPS = window.SITE_WRITEUPS_READY ? await window.SITE_WRITEUPS_READY : (window.SITE_WRITEUPS || []);
 
   const CATEGORY_COLOR = {
     HTB:     '#00d084',
@@ -23,6 +23,18 @@ $(document).ready(function () {
     Other:   '#a78bfa'
   };
   const TAG_COLOR = '#9aa3ab';
+
+  // Graph labels come from the Markdown filename rather than the post title.
+  // Example: posts/ch3ckm8_HTB_Active.md -> HTB_active
+  function graphLabelFromFile(file, fallback) {
+    const filename = String(file || '').split('/').pop().replace(/\.md$/i, '');
+    const withoutAuthorPrefix = filename.replace(/^ch3ckm8_/i, '');
+    if (!withoutAuthorPrefix) return fallback || filename || 'writeup';
+
+    const parts = withoutAuthorPrefix.split('_');
+    if (parts.length === 1) return parts[0];
+    return parts[0].toUpperCase() + '_' + parts.slice(1).join('_').toLowerCase();
+  }
 
   /* ── Build nodes + links from the writeup data ─────────────────── */
   const nodes = [];
@@ -33,7 +45,9 @@ $(document).ready(function () {
     const writeupNode = {
       id: 'w' + i,
       type: 'writeup',
-      label: w.title,
+      label: graphLabelFromFile(w.file, w.title),
+      title: w.title,
+      file: w.file,
       category: w.category,
       difficulty: w.difficulty,
       excerpt: w.excerpt,
@@ -58,6 +72,24 @@ $(document).ready(function () {
 
   // Size tag nodes by how many writeups reference them
   tagIndex.forEach(function (t) { t.radius = 6 + Math.min(t.count * 2, 14); });
+
+  /* ── Dynamic tag legend: always reflects the tags in posts/index.json ── */
+  const legend = document.getElementById('graph-legend');
+  if (legend) {
+    const tags = Array.from(tagIndex.values()).sort(function (a, b) {
+      return b.count - a.count || a.label.localeCompare(b.label);
+    });
+    legend.innerHTML = tags.map(function (tag) {
+      const item = document.createElement('span');
+      const dot = document.createElement('span');
+      dot.className = 'legend-dot';
+      dot.style.background = TAG_COLOR;
+      item.appendChild(dot);
+      item.appendChild(document.createTextNode('#' + tag.label));
+      return item.outerHTML;
+    }).join('');
+    legend.hidden = tags.length === 0;
+  }
 
   /* ── Build adjacency map for quick highlight lookups ───────────── */
   const neighborMap = new Map();
@@ -106,7 +138,7 @@ $(document).ready(function () {
     .attr('dy', function (d) { return d.radius + 10; })
     .attr('text-anchor', 'middle')
     .text(function (d) {
-      const label = d.label;
+      const label = d.type === 'tag' ? '#' + d.label : d.label;
       return label.length > 22 ? label.slice(0, 20) + '…' : label;
     });
 
@@ -189,12 +221,13 @@ $(document).ready(function () {
 
   function renderWriteupPanel(d) {
     const tagsHTML = d.tags.map(function (t) {
-      return `<span class="tag" style="cursor:pointer;" data-jump-tag="${t}">${t}</span>`;
+      return `<span class="tag" style="cursor:pointer;" data-jump-tag="${t}">#${t}</span>`;
     }).join('');
 
     $panel.html(`
       <span class="panel-eyebrow">${d.category} &middot; ${d.difficulty}</span>
-      <h3 class="h6 fw-bold mb-2">${d.label}</h3>
+      <h3 class="h6 fw-bold mb-1">${d.title || d.label}</h3>
+      <div class="graph-file-label mb-2">${d.label}</div>
       <p class="text-muted small mb-2">${d.excerpt}</p>
       <div class="panel-tag-list">${tagsHTML}</div>
       <a href="${d.slug}" class="btn btn-sm btn-outline-success mt-2">
@@ -215,7 +248,7 @@ $(document).ready(function () {
 
     $panel.html(`
       <span class="panel-eyebrow">Tag</span>
-      <h3 class="h6 fw-bold mb-2">${d.label}</h3>
+      <h3 class="h6 fw-bold mb-2">#${d.label}</h3>
       <p class="text-muted small mb-2">${related.length} writeup${related.length === 1 ? '' : 's'} tagged with this.</p>
       <ul class="related-list">${listHTML}</ul>
     `);

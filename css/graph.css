@@ -192,3 +192,18 @@
 }
 
 .graph-panel .related-list a:hover { color: var(--accent); }
+
+
+/* Filename-derived identifier shown for writeup nodes in the detail panel. */
+.graph-file-label {
+  font-family: var(--font-mono);
+  font-size: .72rem;
+  color: var(--bs-secondary-color);
+}
+
+/* The legend is generated from real post tags and may grow as posts are added. */
+.graph-legend {
+  max-width: calc(100% - 6rem);
+  max-height: 5.5rem;
+  overflow-y: auto;
+}

@@ -71,12 +71,8 @@
             </button>
           </div>
 
-          <div class="graph-legend" aria-hidden="true">
-            <span><span class="legend-dot" style="background:#00d084;"></span>HTB</span>
-            <span><span class="legend-dot" style="background:#4f9dff;"></span>CTF</span>
-            <span><span class="legend-dot" style="background:#ff6b6b;"></span>Malware</span>
-            <span><span class="legend-dot" style="background:#9aa3ab;"></span>Tag</span>
-          </div>
+          <!-- Populated dynamically from the tags present in posts/index.json -->
+          <div id="graph-legend" class="graph-legend" aria-label="Tags used by published writeups"></div>
         </div>
 
         <!-- Info panel -->
