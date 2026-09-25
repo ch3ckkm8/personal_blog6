@@ -1,16 +1,109 @@
 .reader-wrap { max-width: 920px; }
-.markdown-body { line-height: 1.75; overflow-wrap: anywhere; }
+.markdown-body { line-height: 1.75; overflow-wrap: anywhere; min-width: 0; }
 .markdown-body h1, .markdown-body h2, .markdown-body h3 { margin-top: 1.6em; margin-bottom: .65em; font-weight: 700; }
 .markdown-body h1 { padding-bottom: .35em; border-bottom: 1px solid var(--bs-border-color); }
-.markdown-body pre { position: relative; padding: 2.8rem 1rem 1rem; border-radius: .6rem; overflow-x: auto; background: #0d1117; border: 1px solid var(--bs-border-color); }
-.markdown-body pre code.hljs { padding: 0; background: transparent; }
-.code-copy-btn { position: absolute; top: .55rem; right: .55rem; display: inline-flex; align-items: center; gap: .35rem; padding: .28rem .55rem; border: 1px solid rgba(255,255,255,.18); border-radius: .4rem; background: rgba(255,255,255,.08); color: #c9d1d9; font: inherit; font-size: .78rem; line-height: 1.2; cursor: pointer; transition: background-color .15s ease, border-color .15s ease, color .15s ease; }
-.code-copy-btn:hover { background: rgba(255,255,255,.14); border-color: rgba(255,255,255,.3); color: #fff; }
-.code-copy-btn.copied { color: #3fb950; border-color: rgba(63,185,80,.45); }
-.code-copy-btn:focus-visible { outline: 2px solid #58a6ff; outline-offset: 2px; }
+
+/* Code blocks follow the site's Bootstrap light/dark theme. */
+.markdown-body pre {
+  position: relative;
+  margin: 1.25rem 0;
+  padding: 2.8rem 1rem 1rem;
+  border: 1px solid var(--bs-border-color);
+  border-radius: .6rem;
+  overflow-x: auto;
+  background: #f6f8fa;
+  color: #24292f;
+  -webkit-overflow-scrolling: touch;
+}
+.markdown-body pre code,
+.markdown-body pre code.hljs {
+  display: block;
+  min-width: max-content;
+  padding: 0;
+  background: transparent;
+  color: inherit;
+  font-size: .875rem;
+  line-height: 1.55;
+  tab-size: 4;
+}
+
+/* Highlight.js — GitHub-like light palette. */
+.hljs { color: #24292f; background: transparent; }
+.hljs-doctag, .hljs-keyword, .hljs-meta .hljs-keyword, .hljs-template-tag, .hljs-template-variable, .hljs-type, .hljs-variable.language_ { color: #cf222e; }
+.hljs-title, .hljs-title.class_, .hljs-title.class_.inherited__, .hljs-title.function_ { color: #8250df; }
+.hljs-attr, .hljs-attribute, .hljs-literal, .hljs-meta, .hljs-number, .hljs-operator, .hljs-selector-attr, .hljs-selector-class, .hljs-selector-id, .hljs-variable { color: #0550ae; }
+.hljs-meta .hljs-string, .hljs-regexp, .hljs-string { color: #0a3069; }
+.hljs-built_in, .hljs-symbol { color: #953800; }
+.hljs-code, .hljs-comment, .hljs-formula { color: #6e7781; }
+.hljs-name, .hljs-quote, .hljs-selector-pseudo, .hljs-selector-tag { color: #116329; }
+.hljs-subst { color: #24292f; }
+.hljs-section { color: #0550ae; font-weight: 700; }
+.hljs-bullet { color: #953800; }
+.hljs-emphasis { color: #24292f; font-style: italic; }
+.hljs-strong { color: #24292f; font-weight: 700; }
+.hljs-addition { color: #116329; background-color: #dafbe1; }
+.hljs-deletion { color: #82071e; background-color: #ffebe9; }
+
+/* Copy button uses theme variables rather than dark-only rgba values. */
+.code-copy-btn {
+  position: absolute;
+  top: .55rem;
+  right: .55rem;
+  display: inline-flex;
+  align-items: center;
+  gap: .35rem;
+  padding: .3rem .55rem;
+  border: 1px solid var(--bs-border-color);
+  border-radius: .4rem;
+  background: var(--bs-body-bg);
+  color: var(--bs-secondary-color);
+  box-shadow: 0 1px 2px rgba(0,0,0,.06);
+  font: inherit;
+  font-size: .78rem;
+  line-height: 1.2;
+  cursor: pointer;
+  transition: background-color .15s ease, border-color .15s ease, color .15s ease, transform .15s ease;
+}
+.code-copy-btn:hover { background: var(--bs-tertiary-bg); border-color: var(--bs-secondary-color); color: var(--bs-body-color); }
+.code-copy-btn:active { transform: translateY(1px); }
+.code-copy-btn.copied { color: #198754; border-color: #198754; }
+.code-copy-btn:focus-visible { outline: 2px solid var(--accent, #0d6efd); outline-offset: 2px; }
+
 .markdown-body code { color: inherit; }
-.markdown-body :not(pre) > code { padding: .12rem .35rem; border-radius: .25rem; background: var(--bs-tertiary-bg); }
-.markdown-body img { max-width: 100%; height: auto; border-radius: .5rem; }
+.markdown-body :not(pre) > code {
+  padding: .12rem .35rem;
+  border: 1px solid var(--bs-border-color-translucent);
+  border-radius: .25rem;
+  background: var(--bs-tertiary-bg);
+  color: var(--bs-emphasis-color);
+}
+.markdown-body img { display: block; max-width: 100%; height: auto; margin: 1.25rem auto; border-radius: .5rem; }
 .markdown-body blockquote { padding-left: 1rem; border-left: 4px solid #00d084; color: var(--bs-secondary-color); }
-.markdown-body table { width: 100%; margin: 1rem 0; border-collapse: collapse; }
+.markdown-body table { width: 100%; margin: 1rem 0; border-collapse: collapse; display: block; overflow-x: auto; }
 .markdown-body th, .markdown-body td { border: 1px solid var(--bs-border-color); padding: .55rem; }
+
+/* Highlight.js — GitHub-like dark palette. */
+[data-bs-theme="dark"] .markdown-body pre { background: #0d1117; color: #c9d1d9; border-color: #30363d; }
+[data-bs-theme="dark"] .hljs { color: #c9d1d9; }
+[data-bs-theme="dark"] .hljs-doctag, [data-bs-theme="dark"] .hljs-keyword, [data-bs-theme="dark"] .hljs-meta .hljs-keyword, [data-bs-theme="dark"] .hljs-template-tag, [data-bs-theme="dark"] .hljs-template-variable, [data-bs-theme="dark"] .hljs-type, [data-bs-theme="dark"] .hljs-variable.language_ { color: #ff7b72; }
+[data-bs-theme="dark"] .hljs-title, [data-bs-theme="dark"] .hljs-title.class_, [data-bs-theme="dark"] .hljs-title.class_.inherited__, [data-bs-theme="dark"] .hljs-title.function_ { color: #d2a8ff; }
+[data-bs-theme="dark"] .hljs-attr, [data-bs-theme="dark"] .hljs-attribute, [data-bs-theme="dark"] .hljs-literal, [data-bs-theme="dark"] .hljs-meta, [data-bs-theme="dark"] .hljs-number, [data-bs-theme="dark"] .hljs-operator, [data-bs-theme="dark"] .hljs-selector-attr, [data-bs-theme="dark"] .hljs-selector-class, [data-bs-theme="dark"] .hljs-selector-id, [data-bs-theme="dark"] .hljs-variable { color: #79c0ff; }
+[data-bs-theme="dark"] .hljs-meta .hljs-string, [data-bs-theme="dark"] .hljs-regexp, [data-bs-theme="dark"] .hljs-string { color: #a5d6ff; }
+[data-bs-theme="dark"] .hljs-built_in, [data-bs-theme="dark"] .hljs-symbol { color: #ffa657; }
+[data-bs-theme="dark"] .hljs-code, [data-bs-theme="dark"] .hljs-comment, [data-bs-theme="dark"] .hljs-formula { color: #8b949e; }
+[data-bs-theme="dark"] .hljs-name, [data-bs-theme="dark"] .hljs-quote, [data-bs-theme="dark"] .hljs-selector-pseudo, [data-bs-theme="dark"] .hljs-selector-tag { color: #7ee787; }
+[data-bs-theme="dark"] .hljs-subst, [data-bs-theme="dark"] .hljs-emphasis, [data-bs-theme="dark"] .hljs-strong { color: #c9d1d9; }
+[data-bs-theme="dark"] .hljs-section { color: #1f6feb; font-weight: 700; }
+[data-bs-theme="dark"] .hljs-bullet { color: #f2cc60; }
+[data-bs-theme="dark"] .hljs-addition { color: #aff5b4; background-color: #033a16; }
+[data-bs-theme="dark"] .hljs-deletion { color: #ffdcd7; background-color: #67060c; }
+[data-bs-theme="dark"] .code-copy-btn { background: #161b22; color: #c9d1d9; border-color: #30363d; box-shadow: none; }
+[data-bs-theme="dark"] .code-copy-btn:hover { background: #21262d; border-color: #8b949e; color: #fff; }
+[data-bs-theme="dark"] .code-copy-btn.copied { color: #3fb950; border-color: #3fb950; }
+
+@media (max-width: 575.98px) {
+  .reader-wrap { padding-left: 1rem; padding-right: 1rem; }
+  .markdown-body pre { margin-left: -.25rem; margin-right: -.25rem; padding: 2.65rem .8rem .85rem; border-radius: .5rem; }
+  .markdown-body pre code, .markdown-body pre code.hljs { font-size: .8rem; }
+  .code-copy-btn { top: .45rem; right: .45rem; }
+}

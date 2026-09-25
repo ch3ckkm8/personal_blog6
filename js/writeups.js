@@ -25,7 +25,6 @@
     const WRITEUPS = await window.SITE_WRITEUPS_READY;
     if (!document.getElementById('writeup-grid')) return;
 
-    let activeCategory = 'all';
     let activeTag = null;
     let searchQuery = '';
     const diffClass = { Easy: 'bg-success', Medium: 'bg-warning text-dark', Hard: 'bg-danger' };
@@ -54,16 +53,43 @@
     function renderGrid() {
       const results = WRITEUPS.filter(function (w) {
         const tags = w.tags || [];
-        return (activeCategory === 'all' || w.category === activeCategory) && (!activeTag || tags.includes(activeTag)) && (!searchQuery || (w.title || '').toLowerCase().includes(searchQuery) || (w.excerpt || '').toLowerCase().includes(searchQuery) || tags.some(function (t) { return t.toLowerCase().includes(searchQuery); }));
+        return (!activeTag || tags.includes(activeTag)) && (!searchQuery || (w.title || '').toLowerCase().includes(searchQuery) || (w.excerpt || '').toLowerCase().includes(searchQuery) || tags.some(function (t) { return t.toLowerCase().includes(searchQuery); }));
       });
       $('#writeup-grid').html(results.map(buildCard).join(''));
       $('#writeup-empty').toggleClass('d-none', results.length !== 0);
       $('#writeup-count').text(results.length === 1 ? '1 writeup' : results.length + ' writeups');
     }
-    function buildTagCloud() {
+    function getTagCounts() {
       const counts = {};
-      WRITEUPS.forEach(function (w) { (w.tags || []).forEach(function (t) { counts[t] = (counts[t] || 0) + 1; }); });
-      $('#tag-cloud').html(Object.entries(counts).sort(function (a,b) { return b[1]-a[1]; }).map(function (e) { const t=escapeHtml(e[0]); return `<button class="tag-cloud-item" data-tag="${t}" aria-pressed="false">${t} <span class="tag-count">${e[1]}</span></button>`; }).join(''));
+      WRITEUPS.forEach(function (w) {
+        (w.tags || []).forEach(function (t) { counts[t] = (counts[t] || 0) + 1; });
+      });
+      return Object.entries(counts).sort(function (a, b) {
+        return b[1] - a[1] || a[0].localeCompare(b[0]);
+      });
+    }
+    function buildTagFilters() {
+      const tags = getTagCounts();
+      $('#search-tag-filters').html(
+        '<button class="filter-btn active" data-tag="" aria-pressed="true">All</button>' +
+        tags.map(function (e) {
+          const t = escapeHtml(e[0]);
+          return `<button class="filter-btn" data-tag="${t}" aria-pressed="false">${t} <span class="tag-count">${e[1]}</span></button>`;
+        }).join('')
+      );
+      $('#tag-cloud').html(tags.map(function (e) {
+        const t = escapeHtml(e[0]);
+        return `<button class="tag-cloud-item" data-tag="${t}" aria-pressed="false">${t} <span class="tag-count">${e[1]}</span></button>`;
+      }).join(''));
+    }
+    function syncTagControls() {
+      $('.filter-btn, .tag-cloud-item').removeClass('active').attr('aria-pressed', 'false');
+      if (!activeTag) {
+        $('.filter-btn[data-tag=""]').addClass('active').attr('aria-pressed', 'true');
+        return;
+      }
+      const selector = `[data-tag="${CSS.escape(String(activeTag))}"]`;
+      $('.filter-btn' + selector + ', .tag-cloud-item' + selector).addClass('active').attr('aria-pressed', 'true');
     }
 
     if (!WRITEUPS.length) {
@@ -71,11 +97,11 @@
       $('#writeup-grid').html('');
       $('#writeup-empty').removeClass('d-none').find('p').html('No published writeups yet. Add <code>.md</code> files to <code>posts/</code>; the GitHub Pages workflow will index them automatically.');
       $('#writeup-count').text('0 writeups');
-    } else { renderFeatured(); buildTagCloud(); renderGrid(); }
+    } else { renderFeatured(); buildTagFilters(); renderGrid(); }
 
-    $(document).on('click', '.filter-btn', function () { activeCategory=$(this).data('filter'); activeTag=null; $('.filter-btn').removeClass('active').attr('aria-pressed','false'); $(this).addClass('active').attr('aria-pressed','true'); $('.tag-cloud-item').removeClass('active').attr('aria-pressed','false'); renderGrid(); });
-    $(document).on('click', '.tag-cloud-item', function () { const tag=$(this).data('tag'); activeTag=activeTag===tag?null:tag; $('.tag-cloud-item').removeClass('active').attr('aria-pressed','false'); if(activeTag) $(this).addClass('active').attr('aria-pressed','true'); renderGrid(); });
-    function activateTag(el) { activeTag=$(el).data('tag') || null; $('.tag-cloud-item').removeClass('active').attr('aria-pressed','false'); if(activeTag) $(`.tag-cloud-item[data-tag="${CSS.escape(String(activeTag))}"]`).addClass('active').attr('aria-pressed','true'); renderGrid(); }
+    $(document).on('click', '.filter-btn', function () { activeTag=$(this).data('tag') || null; syncTagControls(); renderGrid(); });
+    $(document).on('click', '.tag-cloud-item', function () { const tag=$(this).data('tag'); activeTag=activeTag===tag?null:tag; syncTagControls(); renderGrid(); });
+    function activateTag(el) { activeTag=$(el).data('tag') || null; syncTagControls(); renderGrid(); }
     $(document).on('click', '.writeup-card .tag, .featured-card .tag', function(){ activateTag(this); });
     $(document).on('keydown', '.writeup-card .tag, .featured-card .tag', function(e){ if(e.key==='Enter'||e.key===' '){e.preventDefault();activateTag(this);} });
     $('#writeup-search').on('input', function(){ searchQuery=$(this).val().trim().toLowerCase(); renderGrid(); });

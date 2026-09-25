@@ -83,21 +83,12 @@
               </button>
             </div>
 
-            <!-- Category filter chips -->
-            <div role="group" aria-label="Filter writeups by category"
+            <!-- Post tag filters (injected from posts/index.json) -->
+            <div id="search-tag-filters"
+                 role="group"
+                 aria-label="Filter writeups by tag"
                  class="d-flex flex-wrap gap-2">
-              <button class="filter-btn active"
-                      data-filter="all"
-                      aria-pressed="true">All</button>
-              <button class="filter-btn"
-                      data-filter="HTB"
-                      aria-pressed="false">HackTheBox</button>
-              <button class="filter-btn"
-                      data-filter="CTF"
-                      aria-pressed="false">CTF</button>
-              <button class="filter-btn"
-                      data-filter="Malware"
-                      aria-pressed="false">Malware</button>
+              <!-- Injected by writeups.js -->
             </div>
 
           </div>
