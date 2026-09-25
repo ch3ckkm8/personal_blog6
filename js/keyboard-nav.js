@@ -4,6 +4,7 @@
   const NAV_KEYS = new Set(['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Enter', 'Escape']);
   const INTERACTIVE = [
     'a[href]', 'button:not([disabled])', '[role="button"]',
+    'input:not([disabled]):not([type="hidden"])', 'textarea:not([disabled])', 'select:not([disabled])',
     '.graph-node[tabindex]', '.tag[tabindex]', '.site-search-result[href]'
   ].join(',');
 
@@ -40,7 +41,12 @@
     if (current && current !== el) current.classList.remove('keyboard-nav-current');
     current = el;
     current.classList.add('keyboard-nav-current');
-    try { current.focus({ preventScroll: true }); } catch (_) { current.focus(); }
+    // Search/text controls are selectable with arrows, but only receive real
+    // editing focus after Enter. This prevents the first arrow landing on an
+    // input from immediately trapping the user in text-editing behavior.
+    if (!isTypingTarget(current)) {
+      try { current.focus({ preventScroll: true }); } catch (_) { current.focus(); }
+    }
     if (scroll) current.scrollIntoView({ block: 'nearest', inline: 'nearest', behavior: 'smooth' });
     return true;
   }
@@ -75,6 +81,10 @@
 
   function activate(el) {
     if (!el) return false;
+    if (isTypingTarget(el)) {
+      try { el.focus({ preventScroll: true }); } catch (_) { el.focus(); }
+      return true;
+    }
     el.click();
     return true;
   }
@@ -111,8 +121,17 @@
   document.addEventListener('keydown', function (event) {
     if (!NAV_KEYS.has(event.key)) return;
 
-    // Never steal arrows/Enter from text entry, selects, or contenteditable areas.
-    if (isTypingTarget(event.target)) return;
+    // While actually editing a field, leave normal typing/navigation alone.
+    // Escape exits editing mode and returns control to spatial navigation.
+    if (isTypingTarget(event.target)) {
+      if (event.key === 'Escape') {
+        event.target.blur();
+        if (current) current.classList.add('keyboard-nav-current');
+        event.preventDefault();
+        flash(event.key);
+      }
+      return;
+    }
 
     let handled = false;
     if (event.key.startsWith('Arrow')) {
@@ -134,7 +153,7 @@
   }, true);
 
   document.addEventListener('focusin', function (event) {
-    if (event.target.matches && event.target.matches(INTERACTIVE) && !isTypingTarget(event.target)) {
+    if (event.target.matches && event.target.matches(INTERACTIVE)) {
       if (current && current !== event.target) current.classList.remove('keyboard-nav-current');
       current = event.target;
     }

@@ -133,7 +133,7 @@
       renderFeatured(); buildTagFilters(); syncTagControls(); renderGrid();
     }
 
-    $(document).on('click', '.filter-btn', function () { activeTag=$(this).data('tag') || null; syncTagControls(); renderGrid(); });
+    $(document).on('click', '.filter-btn', function () { const tag=$(this).data('tag') || null; activeTag=tag && activeTag===tag ? null : tag; syncTagControls(); renderGrid(); });
     $(document).on('click', '.tag-cloud-item', function () { const tag=$(this).data('tag'); activeTag=activeTag===tag?null:tag; syncTagControls(); renderGrid(); });
     function activateTag(el) { activeTag=$(el).data('tag') || null; syncTagControls(); renderGrid(); }
     $(document).on('click', '.writeup-card .tag, .featured-card .tag', function(){ activateTag(this); });
