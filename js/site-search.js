@@ -15,8 +15,9 @@
   const escapeHtml = value => $('<div>').text(value || '').html();
 
   function stripMarkdown(markdown) {
+    // Keep fenced-code CONTENT searchable; remove only the fence markers/language.
     return (markdown || '')
-      .replace(/```[\s\S]*?```/g, ' ')
+      .replace(/^\s*```[^\n]*$/gm, ' ')
       .replace(/`([^`]+)`/g, '$1')
       .replace(/!\[[^\]]*\]\([^)]*\)/g, ' ')
       .replace(/\[([^\]]+)\]\([^)]*\)/g, '$1')
@@ -188,7 +189,14 @@
       (doc.sections || []).forEach(section => {
         const score = scoreText(section.heading, tagText, section.text, terms);
         if (!score) return;
-        results.push({ doc, score, text: section.text, section: section.heading, slug: section.slug });
+        const match = findBestMatch(section.text, terms);
+        let occurrence = 0;
+        if (match) {
+          const before = normalize(section.text).slice(0, match.at);
+          occurrence = before.split(match.term).length - 1;
+        }
+        results.push({ doc, score, text: section.text, section: section.heading, slug: section.slug,
+          hitTerm: match ? match.term : '', hitOccurrence: occurrence });
       });
     });
     return results.sort((a,b) => b.score-a.score || a.doc.title.localeCompare(b.doc.title));
@@ -198,7 +206,12 @@
     if (result.doc.type !== 'post') return result.doc.url;
     const joiner = result.doc.url.includes('?') ? '&' : '?';
     let url = result.doc.url + joiner + 'q=' + encodeURIComponent(query);
-    if (result.slug) url += '&section=' + encodeURIComponent(result.slug) + '#' + encodeURIComponent(result.slug);
+    if (result.slug) url += '&section=' + encodeURIComponent(result.slug);
+    if (result.hitTerm) {
+      url += '&hit=' + encodeURIComponent(result.hitTerm);
+      url += '&occurrence=' + encodeURIComponent(String(result.hitOccurrence || 0));
+    }
+    if (result.slug) url += '#' + encodeURIComponent(result.slug);
     return url;
   }
 
