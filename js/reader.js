@@ -1,6 +1,9 @@
 $(document).ready(async function () {
   const $status = $('#reader-status');
   const $content = $('#markdown-content');
+  const $meta = $('#post-meta');
+  const $layout = $('#reader-layout');
+  const $outline = $('#post-outline');
   const file = new URLSearchParams(window.location.search).get('post') || '';
 
   if (!/^posts\/[A-Za-z0-9._-]+\.md$/i.test(file)) {
@@ -25,7 +28,51 @@ $(document).ready(async function () {
     if (typeof DOMPurify === 'undefined') throw new Error('The HTML sanitizer failed to load.');
 
     const html = DOMPurify.sanitize(marked.parse(post.content));
-    $content.html(html).removeClass('d-none');
+    $content.html(html);
+
+    // Give every Markdown heading a stable anchor and build a clickable outline.
+    const usedIds = new Set();
+    const outlineItems = [];
+    $content.find('h1, h2, h3, h4, h5, h6').each(function () {
+      const heading = this;
+      const level = Number(heading.tagName.substring(1));
+      const text = $(heading).text().trim();
+      if (!text) return;
+
+      let base = text.toLowerCase()
+        .normalize('NFKD').replace(/[\u0300-\u036f]/g, '')
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/^-+|-+$/g, '') || 'section';
+      let id = base;
+      let n = 2;
+      while (usedIds.has(id)) id = base + '-' + n++;
+      usedIds.add(id);
+      heading.id = id;
+      heading.classList.add('outline-heading');
+      outlineItems.push({ level: level, text: text, id: id });
+    });
+
+    if (outlineItems.length) {
+      const minLevel = Math.min.apply(null, outlineItems.map(function (item) { return item.level; }));
+      const links = outlineItems.map(function (item) {
+        const indent = Math.max(0, item.level - minLevel);
+        return '<a class="outline-link" style="--outline-indent:' + indent + '" href="#' + encodeURIComponent(item.id) + '">' + $('<div>').text(item.text).html() + '</a>';
+      }).join('');
+      $outline.html('<div class="outline-card"><div class="outline-title"><i class="bi bi-list-nested me-2"></i>On this page</div><nav>' + links + '</nav></div>');
+    } else {
+      $outline.addClass('d-none');
+    }
+
+    // Post tags open the Writeups page in a new tab with that tag pre-selected.
+    if (Array.isArray(post.tags) && post.tags.length) {
+      const tagLinks = post.tags.map(function (tag) {
+        const url = 'writeups.html?tag=' + encodeURIComponent(tag);
+        return '<a class="post-tag" href="' + url + '" target="_blank" rel="noopener noreferrer"><i class="bi bi-tag-fill me-1"></i>' + $('<div>').text(tag).html() + '</a>';
+      }).join('');
+      $meta.html('<div class="post-tags"><span class="post-tags-label">Tags</span>' + tagLinks + '</div>').removeClass('d-none');
+    }
+
+    $layout.removeClass('d-none');
 
     // Syntax highlighting + one-click copy buttons for fenced Markdown code blocks.
     $content.find('pre').each(function () {
@@ -72,6 +119,15 @@ $(document).ready(async function () {
     $content.find('a').each(function () {
       const href = $(this).attr('href') || '';
       if (href && !/^(?:[a-z]+:|\/|#)/i.test(href)) $(this).attr('href', new URL(href, postUrl.href).href);
+    });
+
+    $outline.on('click', 'a[href^="#"]', function (event) {
+      const id = decodeURIComponent(this.hash.slice(1));
+      const target = document.getElementById(id);
+      if (!target) return;
+      event.preventDefault();
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      history.replaceState(null, '', '#' + encodeURIComponent(id));
     });
 
     $status.addClass('d-none');

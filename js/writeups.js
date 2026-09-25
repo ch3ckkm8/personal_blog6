@@ -25,7 +25,8 @@
     const WRITEUPS = await window.SITE_WRITEUPS_READY;
     if (!document.getElementById('writeup-grid')) return;
 
-    let activeTag = null;
+    const requestedTag = new URLSearchParams(window.location.search).get('tag');
+    let activeTag = requestedTag && WRITEUPS.some(function (w) { return (w.tags || []).includes(requestedTag); }) ? requestedTag : null;
     let searchQuery = '';
     const diffClass = { Easy: 'bg-success', Medium: 'bg-warning text-dark', Hard: 'bg-danger' };
 
@@ -97,7 +98,7 @@
       $('#writeup-grid').html('');
       $('#writeup-empty').removeClass('d-none').find('p').html('No published writeups yet. Add <code>.md</code> files to <code>posts/</code>; the GitHub Pages workflow will index them automatically.');
       $('#writeup-count').text('0 writeups');
-    } else { renderFeatured(); buildTagFilters(); renderGrid(); }
+    } else { renderFeatured(); buildTagFilters(); syncTagControls(); renderGrid(); }
 
     $(document).on('click', '.filter-btn', function () { activeTag=$(this).data('tag') || null; syncTagControls(); renderGrid(); });
     $(document).on('click', '.tag-cloud-item', function () { const tag=$(this).data('tag'); activeTag=activeTag===tag?null:tag; syncTagControls(); renderGrid(); });
