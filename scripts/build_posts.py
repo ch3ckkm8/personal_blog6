@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
-import json, re
+import json
+import re
 from pathlib import Path
 from datetime import date
 
@@ -8,57 +9,51 @@ POSTS = ROOT / 'posts'
 OUT = POSTS / 'index.json'
 
 
-def parse_frontmatter(text):
-    meta = {}
-    body = text
-    if text.startswith('---\n'):
-        end = text.find('\n---\n', 4)
-        if end != -1:
-            raw = text[4:end]
-            body = text[end + 5:]
-            for line in raw.splitlines():
-                if ':' not in line:
-                    continue
-                k, v = line.split(':', 1)
-                k, v = k.strip(), v.strip().strip('"\'')
-                if k == 'tags':
-                    v = [x.strip().strip('"\'') for x in v.strip('[]').split(',') if x.strip()]
-                elif k == 'featured':
-                    v = v.lower() in ('true', 'yes', '1')
-                meta[k] = v
-    return meta, body
+def display_title_from_filename(path):
+    """Build a readable title without requiring metadata/frontmatter."""
+    stem = re.sub(r'^ch3ckm8_', '', path.stem, flags=re.I)
+    parts = [part for part in re.split(r'[_-]+', stem) if part]
+    return ' '.join(part.upper() if part.lower() in {'htb', 'ctf'} else part for part in parts)
 
 
-def first_heading(body, fallback):
-    m = re.search(r'^#\s+(.+?)\s*$', body, re.M)
-    return m.group(1).strip() if m else fallback
+def extract_tags(body):
+    """Extract #tags only from explicit `Tags:` lines in the Markdown."""
+    tags = []
+    seen = set()
+    for match in re.finditer(r'^\s*Tags\s*:\s*(.+)$', body, flags=re.I | re.M):
+        for tag in re.findall(r'(?<!\w)#([A-Za-z0-9][A-Za-z0-9_-]*)', match.group(1)):
+            key = tag.casefold()
+            if key not in seen:
+                seen.add(key)
+                tags.append(tag)
+    return tags
 
 
 def excerpt(body):
     body = re.sub(r'```.*?```', '', body, flags=re.S)
     body = re.sub(r'!\[[^]]*\]\([^)]*\)', '', body)
     body = re.sub(r'\[([^]]+)\]\([^)]*\)', r'\1', body)
+    body = re.sub(r'^\s*Tags\s*:.*$', '', body, flags=re.I | re.M)
     body = re.sub(r'[#>*_`~-]', ' ', body)
     paras = [re.sub(r'\s+', ' ', p).strip() for p in re.split(r'\n\s*\n', body)]
-    paras = [p for p in paras if p and not p.startswith('|')]
+    paras = [p for p in paras if p and not p.startswith('|') and p.lower() != 'intro']
     value = next((p for p in paras if len(p) > 20), 'Read the full writeup.')
     return value[:217] + '...' if len(value) > 220 else value
+
 
 items = []
 POSTS.mkdir(exist_ok=True)
 for path in sorted(POSTS.glob('*.md')):
-    text = path.read_text(encoding='utf-8')
-    meta, body = parse_frontmatter(text)
-    title = meta.get('title') or first_heading(body, path.stem.replace('-', ' ').replace('_', ' ').title())
+    body = path.read_text(encoding='utf-8')
     items.append({
-        'title': title,
+        'title': display_title_from_filename(path),
         'file': 'posts/' + path.name,
-        'category': meta.get('category', 'Other'),
-        'tags': meta.get('tags', []),
-        'date': meta.get('date', date.fromtimestamp(path.stat().st_mtime).isoformat()),
-        'difficulty': meta.get('difficulty', 'N/A'),
-        'excerpt': meta.get('excerpt') or excerpt(body),
-        'featured': bool(meta.get('featured', False)),
+        'category': 'Other',
+        'tags': extract_tags(body),
+        'date': date.fromtimestamp(path.stat().st_mtime).isoformat(),
+        'difficulty': 'N/A',
+        'excerpt': excerpt(body),
+        'featured': False,
         'content': body,
     })
 

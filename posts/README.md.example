@@ -1,12 +1,17 @@
----
-title: HackTheBox — Machine: Example
-category: HTB
-tags: [linux, web, privesc]
-date: 2026-09-25
-difficulty: Medium
-featured: true
----
+## Intro
 
-# HackTheBox — Machine: Example
+Write your introduction here.
 
-Write your Markdown post here. Rename this file to end in `.md` (for example `example.md`) so it is published.
+Tags: #windows #Kerberoasting #OSCPpath
+
+Tools used:
+- Tool one
+- Tool two
+
+# Reconnaissance
+
+Your writeup content starts here.
+
+## Enumeration
+
+More content here.
