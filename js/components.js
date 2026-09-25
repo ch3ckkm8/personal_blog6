@@ -178,7 +178,7 @@ $(document).ready(function () {
         </div>
         <textarea id="markdown-note-editor" class="markdown-note-editor" spellcheck="true"
                   aria-label="Markdown notes" placeholder="Write Markdown here..."></textarea>
-        <div id="markdown-note-preview" class="markdown-note-preview markdown-body" hidden></div>
+        <div id="markdown-note-preview" class="markdown-note-preview" hidden></div>
         <div class="markdown-note-footer"><span>Saved locally</span><span>Markdown supported</span></div>
       </aside>`;
 

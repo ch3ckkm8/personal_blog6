@@ -5,7 +5,7 @@
   const INTERACTIVE = [
     'a[href]', 'button:not([disabled])', '[role="button"]',
     'input:not([disabled]):not([type="hidden"])', 'textarea:not([disabled])', 'select:not([disabled])',
-    '.graph-node[tabindex]', '.tag[tabindex]', '.site-search-result[href]'
+    '.graph-node[tabindex]', '.tag[tabindex]', '.site-search-result[href]', '#markdown-content'
   ].join(',');
 
   let current = null;
@@ -79,6 +79,48 @@
     return best;
   }
 
+  function readerArticle() {
+    return document.getElementById('markdown-content');
+  }
+
+  function readerOutlineLink() {
+    const outline = document.getElementById('post-outline');
+    if (!outline) return null;
+    return outline.querySelector('.outline-link.active') || outline.querySelector('.outline-link');
+  }
+
+  function handleReaderArrow(key) {
+    const article = readerArticle();
+    if (!article || !visible(article)) return false;
+    const inOutline = current && current.closest && current.closest('#post-outline');
+
+    // Left from the outline enters article-reading mode. Right from the article
+    // returns to the active outline entry, keeping the tree fully accessible.
+    if (key === 'ArrowLeft' && inOutline) return setCurrent(article, false);
+    if (key === 'ArrowRight' && current === article) {
+      const link = readerOutlineLink();
+      return link ? setCurrent(link, true) : false;
+    }
+
+    // In article-reading mode, vertical arrows scroll the actual post instead of
+    // being captured by the outline/sidebar navigation.
+    if ((key === 'ArrowDown' || key === 'ArrowUp') && current === article) {
+      const amount = Math.max(180, Math.round(window.innerHeight * 0.62));
+      window.scrollBy({ top: key === 'ArrowDown' ? amount : -amount, behavior: 'smooth' });
+      return true;
+    }
+
+    // With no current keyboard target on a reader page, Up/Down starts in the
+    // article and scrolls immediately, which matches normal reading behavior.
+    if ((key === 'ArrowDown' || key === 'ArrowUp') && (!current || !visible(current))) {
+      setCurrent(article, false);
+      const amount = Math.max(180, Math.round(window.innerHeight * 0.62));
+      window.scrollBy({ top: key === 'ArrowDown' ? amount : -amount, behavior: 'smooth' });
+      return true;
+    }
+    return false;
+  }
+
   function activate(el) {
     if (!el) return false;
     if (isTypingTarget(el)) {
@@ -135,8 +177,11 @@
 
     let handled = false;
     if (event.key.startsWith('Arrow')) {
-      const target = nearest(event.key);
-      if (target) handled = setCurrent(target, true);
+      handled = handleReaderArrow(event.key);
+      if (!handled) {
+        const target = nearest(event.key);
+        if (target) handled = setCurrent(target, true);
+      }
     } else if (event.key === 'Enter') {
       if (current && visible(current)) handled = activate(current);
       else if (document.activeElement && document.activeElement.matches(INTERACTIVE)) handled = activate(document.activeElement);
