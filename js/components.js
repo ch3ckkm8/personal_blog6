@@ -8,7 +8,7 @@ $(document).ready(function () {
 
         <a class="navbar-brand" href="index.html"
            aria-label="Site home page">
-          0xnotes<span>.sh</span>
+          Ch3ckm8's Lair
         </a>
 
         <!-- Dark-mode toggle -->
@@ -80,7 +80,7 @@ $(document).ready(function () {
         <div class="row align-items-center">
 
           <div class="col-md-5 text-center text-md-start mb-3 mb-md-0">
-            <span class="fw-bold">0xnotes<span class="accent">.sh</span></span>
+            <span class="fw-bold">Ch3ckm8's Lair</span>
             <p class="text-muted mb-0" style="font-size:.78rem;">
               A cybersecurity writeups &amp; requests template
             </p>

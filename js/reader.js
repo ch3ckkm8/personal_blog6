@@ -172,7 +172,7 @@ $(document).ready(async function () {
     });
 
     $status.addClass('d-none');
-    document.title = (post.title || 'Writeup') + ' | 0xnotes';
+    document.title = (post.title || 'Writeup') + " | Ch3ckm8's Lair";
   } catch (error) {
     console.error('[reader]', error);
     $status.html('The writeup is indexed, but the reader failed to render it. <small class="d-block mt-2 text-muted">' + $('<div>').text(error.message).html() + '</small>');

@@ -1,4 +1,4 @@
-# 0xnotes — Static Cybersecurity Blog Template
+# Ch3ckm8's Lair — Static Cybersecurity Blog Template
 
 ## Publishing Markdown writeups
 
