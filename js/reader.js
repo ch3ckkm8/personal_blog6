@@ -53,12 +53,53 @@ $(document).ready(async function () {
     });
 
     if (outlineItems.length) {
-      const minLevel = Math.min.apply(null, outlineItems.map(function (item) { return item.level; }));
-      const links = outlineItems.map(function (item) {
-        const indent = Math.max(0, item.level - minLevel);
-        return '<a class="outline-link" style="--outline-indent:' + indent + '" href="#' + encodeURIComponent(item.id) + '">' + $('<div>').text(item.text).html() + '</a>';
-      }).join('');
-      $outline.html('<div class="outline-card"><div class="outline-title"><i class="bi bi-list-nested me-2"></i>On this page</div><nav>' + links + '</nav></div>');
+      // Build a real nested tree from Markdown heading levels. If a document
+      // skips a level (for example h2 -> h4), attach it to the nearest parent.
+      const root = { level: 0, children: [] };
+      const stack = [root];
+      outlineItems.forEach(function (item) {
+        while (stack.length > 1 && stack[stack.length - 1].level >= item.level) stack.pop();
+        const node = Object.assign({ children: [] }, item);
+        stack[stack.length - 1].children.push(node);
+        stack.push(node);
+      });
+
+      function renderTree(nodes, depth) {
+        return '<ul class="outline-tree outline-depth-' + depth + '">' + nodes.map(function (node) {
+          const children = node.children.length ? renderTree(node.children, depth + 1) : '';
+          return '<li class="outline-node"><a class="outline-link" data-heading-id="' + node.id + '" href="#' + encodeURIComponent(node.id) + '"><span class="outline-dot" aria-hidden="true"></span><span class="outline-text">' + $('<div>').text(node.text).html() + '</span></a>' + children + '</li>';
+        }).join('') + '</ul>';
+      }
+
+      $outline.html('<div class="outline-card"><div class="outline-title"><i class="bi bi-diagram-3 me-2"></i>On this page</div><nav class="outline-nav">' + renderTree(root.children, 0) + '</nav></div>');
+
+      // Highlight the section currently nearest the top of the viewport.
+      const headingElements = outlineItems.map(function (item) { return document.getElementById(item.id); }).filter(Boolean);
+      let ticking = false;
+      function updateActiveOutline() {
+        ticking = false;
+        const threshold = 120;
+        let active = headingElements[0] || null;
+        headingElements.forEach(function (heading) {
+          if (heading.getBoundingClientRect().top <= threshold) active = heading;
+        });
+        $outline.find('.outline-link').removeClass('active');
+        if (active) {
+          const $active = $outline.find('.outline-link[data-heading-id="' + CSS.escape(active.id) + '"]').addClass('active');
+          const nav = $outline.find('.outline-nav').get(0);
+          const link = $active.get(0);
+          if (nav && link && (link.offsetTop < nav.scrollTop || link.offsetTop + link.offsetHeight > nav.scrollTop + nav.clientHeight)) {
+            link.scrollIntoView({ block: 'nearest' });
+          }
+        }
+      }
+      $(window).on('scroll.outline resize.outline', function () {
+        if (!ticking) {
+          ticking = true;
+          window.requestAnimationFrame(updateActiveOutline);
+        }
+      });
+      updateActiveOutline();
     } else {
       $outline.addClass('d-none');
     }
