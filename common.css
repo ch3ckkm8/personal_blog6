@@ -8,50 +8,26 @@
   --radius-md:   6px;   /* containers */
 }
 
-/* ── Color themes ────────────────────────────────────────────────
-   Opt-in via data-terminal-theme="green|blue|amber" on <html>.
-   Leave the attribute off and nothing below applies — existing
-   light/dark mode (data-bs-theme) is untouched and independent. */
-[data-terminal-theme="green"] {
-  --accent:      #00d084;
-  --accent-dim:  rgba(0, 208, 132, 0.12);
-  --bs-body-bg:    #050805;
-  --bs-body-color: #d8f5e3;
+/* ── Accent palettes ───────────────────────────────────────────
+   Accent only: light/dark backgrounds and text remain controlled by
+   Bootstrap's data-bs-theme, so every palette stays readable. */
+[data-accent="green"]  { --accent:#00c77b; --accent-dim:rgba(0,199,123,.14); }
+[data-accent="red"]    { --accent:#e05260; --accent-dim:rgba(224,82,96,.14); }
+[data-accent="cyan"]   { --accent:#00a9c7; --accent-dim:rgba(0,169,199,.14); }
+[data-accent="orange"] { --accent:#d98200; --accent-dim:rgba(217,130,0,.14); }
+[data-accent="purple"] { --accent:#9b72e8; --accent-dim:rgba(155,114,232,.14); }
+
+.accent-palette-toggle {
+  color: var(--bs-secondary-color);
+  border: 1px solid transparent;
+  transition: color var(--transition), border-color var(--transition), background var(--transition), transform var(--transition);
 }
-
-[data-terminal-theme="blue"] {
-  --accent:      #4da6ff;
-  --accent-dim:  rgba(77, 166, 255, 0.12);
-  --bs-body-bg:    #050709;
-  --bs-body-color: #d9e8f7;
+.accent-palette-toggle:hover, .accent-palette-toggle:focus-visible {
+  color: var(--accent); border-color: var(--accent); background: var(--accent-dim); outline: 0;
 }
-
-[data-terminal-theme="amber"] {
-  --accent:      #ffb000;
-  --accent-dim:  rgba(255, 176, 0, 0.12);
-  --bs-body-bg:    #0a0806;
-  --bs-body-color: #f6e9d2;
-}
-
-/* Small swatch buttons for a theme picker, styled to match the rest
-   of the site's controls — pair with .theme-swatch--green / --blue /
-   --amber for the fill color. */
-.theme-swatch {
-  width: 18px;
-  height: 18px;
-  border-radius: 50%;
-  border: 1.5px solid var(--bs-border-color);
-  cursor: pointer;
-  padding: 0;
-  transition: border-color var(--transition), transform var(--transition);
-}
-
-.theme-swatch:hover,
-.theme-swatch.active { border-color: var(--bs-body-color); transform: scale(1.15); }
-
-.theme-swatch--green { background: #00d084; }
-.theme-swatch--blue  { background: #4da6ff; }
-.theme-swatch--amber { background: #ffb000; }
+.accent-palette-toggle:active { transform: scale(.94); }
+.accent-palette-toggle i { display:inline-block; transition: transform .22s ease; }
+.accent-palette-toggle.is-cycling i { transform: rotate(55deg); }
 
 /* ── Base typography ─────────────────────────────────────────────
    Committing the whole page to the terminal font, not just labels. */

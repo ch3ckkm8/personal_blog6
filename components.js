@@ -27,6 +27,15 @@ $(document).ready(function () {
           <i class="bi bi-moon-stars-fill" aria-hidden="true"></i>
         </button>
 
+        <!-- Accent palette: cycles the site-wide accent color -->
+        <button id="accent-palette-toggle"
+                type="button"
+                class="btn btn-sm accent-palette-toggle me-2"
+                aria-label="Cycle accent color"
+                title="Accent: Green">
+          <i class="bi bi-palette-fill" aria-hidden="true"></i>
+        </button>
+
         <!-- Hamburger — collapses nav on smaller screens -->
         <button class="navbar-toggler"
                 type="button"

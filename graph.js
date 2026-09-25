@@ -16,7 +16,7 @@ $(document).ready(async function () {
 
   const WRITEUPS = window.SITE_WRITEUPS_READY ? await window.SITE_WRITEUPS_READY : (window.SITE_WRITEUPS || []);
 
-  const WRITEUP_COLOR = '#00d084';
+  const getWriteupColor = () => getComputedStyle(document.documentElement).getPropertyValue('--accent').trim() || '#00c77b';
 
   // Give every tag a deterministic, well-spread color. We use the golden
   // angle instead of Math.random() so colors remain stable across refreshes
@@ -151,7 +151,7 @@ $(document).ready(async function () {
   nodeSel.append('circle')
     .attr('r', function (d) { return d.radius; })
     .attr('fill', function (d) {
-      return d.type === 'tag' ? d.color : WRITEUP_COLOR;
+      return d.type === 'tag' ? d.color : getWriteupColor();
     });
 
   nodeSel.append('text')
