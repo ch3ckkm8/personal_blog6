@@ -1,7 +1,7 @@
 ## Intro
 
 ![](MediaFiles/Pasted%20image%2020250813193600.png)
-Tags: #windows #NotAssumedBreach #OSCPpath #PrivGroupAbuse
+Tags: #windows #NotAssumedBreach #OSCPpath #PrivGroupAbuse #easy
 Tools used: 
 - BurpSuite (web app inspection)
 - ldapsearch (ldap enum)
