@@ -7,6 +7,7 @@ Disclaimer: Every writeup was fueled by caffeine and questionable confidence, do
 # Lainkusanagi OSCP-like progress: 
 - HTB: Linux: 69/71 , Windows: 18/18 , AD: 15/15, Prolabs: 0/2
 - HTB x vulnlab: 0/19
+
 --> writeups for this path are constantly uploaded and updated as my knowledge expands
 
 # Certifications
