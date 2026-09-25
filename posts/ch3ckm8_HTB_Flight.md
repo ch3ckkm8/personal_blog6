@@ -2,7 +2,6 @@
 
 ![image.png](MediaFiles/flight_image.png)
 
-[[windows]] [[NotAssumedBreach]] [[webapp]] [[PortForwarding]] [[Impersonation]] [[DCSync]] [[WinPEAS]] [[Vhosts]] [[OSCPpath]]
 Tags: #windows #NotAssumedBreach #WebApp #PortForwarding #Impersonation #DCSync #WinPEAS #Vhosts #OSCPpath 
 
 Tools used:
