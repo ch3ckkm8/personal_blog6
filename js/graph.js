@@ -9,12 +9,12 @@
  * Nodes:  one per writeup + one per unique tag
  * Links:  writeup <-> each of its tags
  */
-$(document).ready(function () {
+$(document).ready(async function () {
 
   const stage = document.getElementById('knowledge-graph');
   if (!stage) return; // not on the graph page
 
-  const WRITEUPS = window.SITE_WRITEUPS || [];
+  const WRITEUPS = window.SITE_WRITEUPS_READY ? await window.SITE_WRITEUPS_READY : (window.SITE_WRITEUPS || []);
 
   const CATEGORY_COLOR = {
     HTB:     '#00d084',

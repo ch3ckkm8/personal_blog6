@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Cybersecurity writeup">
+  <title>Writeup | 0xnotes</title>
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <script>document.documentElement.setAttribute('data-bs-theme', localStorage.getItem('theme') || 'light');</script>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="css/common.css">
+  <link rel="stylesheet" href="css/reader.css">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" defer></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/dompurify@3.2.6/dist/purify.min.js" defer></script>
+  <script src="js/theme.js" defer></script>
+  <script src="js/components.js" defer></script>
+  <script src="js/reader.js" defer></script>
+</head>
+<body class="d-flex flex-column min-vh-100">
+  <div id="navbar-placeholder"></div>
+  <main class="flex-grow-1">
+    <div class="container py-5 reader-wrap">
+      <a href="writeups.html" class="text-decoration-none small"><i class="bi bi-arrow-left me-1"></i>All writeups</a>
+      <div id="reader-status" class="text-muted py-5">Loading writeup…</div>
+      <article id="markdown-content" class="markdown-body d-none"></article>
+    </div>
+  </main>
+  <div id="footer-placeholder"></div>
+</body>
+</html>
