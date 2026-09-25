@@ -16,12 +16,8 @@ $(document).ready(async function () {
 
   const WRITEUPS = window.SITE_WRITEUPS_READY ? await window.SITE_WRITEUPS_READY : (window.SITE_WRITEUPS || []);
 
-  const CATEGORY_COLOR = {
-    HTB:     '#00d084',
-    CTF:     '#4f9dff',
-    Malware: '#ff6b6b',
-    Other:   '#a78bfa'
-  };
+  const WRITEUP_COLOR = '#00d084';
+
   // Give every tag a deterministic, well-spread color. We use the golden
   // angle instead of Math.random() so colors remain stable across refreshes
   // while still being distributed around the full hue wheel.
@@ -72,8 +68,6 @@ $(document).ready(async function () {
       label: graphLabelFromFile(w.file, w.title),
       title: w.title,
       file: w.file,
-      category: w.category,
-      difficulty: w.difficulty,
       excerpt: w.excerpt,
       date: w.date,
       slug: w.slug,
@@ -157,7 +151,7 @@ $(document).ready(async function () {
   nodeSel.append('circle')
     .attr('r', function (d) { return d.radius; })
     .attr('fill', function (d) {
-      return d.type === 'tag' ? d.color : (CATEGORY_COLOR[d.category] || CATEGORY_COLOR.Other);
+      return d.type === 'tag' ? d.color : WRITEUP_COLOR;
     });
 
   nodeSel.append('text')
@@ -251,7 +245,6 @@ $(document).ready(async function () {
     }).join('');
 
     $panel.html(`
-      <span class="panel-eyebrow">${d.category} &middot; ${d.difficulty}</span>
       <h3 class="h6 fw-bold mb-1">${d.title || d.label}</h3>
       <div class="graph-file-label mb-2">${d.label}</div>
       <p class="text-muted small mb-2">${d.excerpt}</p>
@@ -268,8 +261,7 @@ $(document).ready(async function () {
     });
 
     const listHTML = related.map(function (w) {
-      return `<li><a href="${w.slug}">${w.label}</a>
-              <span class="text-muted"> — ${w.category}</span></li>`;
+      return `<li><a href="${w.slug}">${w.label}</a></li>`;
     }).join('');
 
     $panel.html(`

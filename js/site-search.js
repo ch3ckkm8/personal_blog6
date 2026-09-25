@@ -5,9 +5,7 @@
     { title: 'Home', url: 'index.html', selector: 'main' },
     { title: 'Writeups', url: 'writeups.html', selector: 'main' },
     { title: 'Knowledge Graph', url: 'graph.html', selector: 'main' },
-    { title: 'Requests', url: 'tasks.html', selector: 'main' },
-    { title: 'About', url: 'about.html', selector: 'main' },
-    { title: 'Contact', url: 'contact.html', selector: 'main' }
+    { title: 'About', url: 'about.html', selector: 'main' }
   ];
 
   let documentsPromise = null;

@@ -50,13 +50,7 @@ $(document).ready(function () {
               <a class="nav-link" href="graph.html">Graph</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="tasks.html">Requests</a>
-            </li>
-            <li class="nav-item">
               <a class="nav-link" href="about.html">About</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="contact.html">Contact</a>
             </li>
           </ul>
         </div>
@@ -89,7 +83,7 @@ $(document).ready(function () {
           <div class="col-md-5 text-center text-md-start mb-3 mb-md-0">
             <span class="fw-bold">Ch3ckm8's Lair</span>
             <p class="text-muted mb-0" style="font-size:.78rem;">
-              A cybersecurity writeups &amp; requests template
+              Cybersecurity writeups, research &amp; knowledge graph
             </p>
           </div>
 
@@ -102,13 +96,7 @@ $(document).ready(function () {
                 <a class="footer-link" href="graph.html">Graph</a>
               </li>
               <li class="list-inline-item ms-3">
-                <a class="footer-link" href="tasks.html">Requests</a>
-              </li>
-              <li class="list-inline-item ms-3">
                 <a class="footer-link" href="about.html">About</a>
-              </li>
-              <li class="list-inline-item ms-3">
-                <a class="footer-link" href="contact.html">Contact</a>
               </li>
             </ul>
           </div>
