@@ -1,7 +1,8 @@
 ## Intro
 
-This is a linux machine, custom made by my friend RoboGR00t 
 ![Pasted image 20250512003425](MediaFiles/Pasted%20image%2020250512003425.png)
+
+This is a linux machine, custom made by my friend RoboGR00t
 
 Description:
 ```
@@ -13,8 +14,6 @@ In this CTF challenge, you are the hacker. Uncover the flaws, break through the 
 
 Welcome to "Portfolio CTF" The game is on. Good luck!
 ```
-
-[[linux]] [[WebApp]] [[XSS]] [[RCE]] [[Docker]]
 
 Tags: #linux #WebApp #XSS #RCE #Docker
 Tools used: 
