@@ -130,6 +130,16 @@
         });
       }
     } catch (_) {}
+    try {
+      const notesResponse = await fetch('content/notes.md', { cache: 'no-cache' });
+      if (notesResponse.ok) {
+        const notesContent = await notesResponse.text();
+        docs.push({
+          type: 'notes', title: 'Notes', url: 'notes.html', text: stripMarkdown(notesContent),
+          raw: notesContent, tags: [], sections: extractSections(notesContent)
+        });
+      }
+    } catch (_) {}
     const pages = await Promise.all(PAGE_INDEX.map(loadStaticPage));
     pages.filter(Boolean).forEach(page => docs.push(page));
     return docs;
@@ -174,7 +184,7 @@
   function buildSearchResults(docs, terms) {
     const results = [];
     docs.forEach(doc => {
-      if (doc.type !== 'post') {
+      if (doc.type === 'page') {
         const score = scoreDocument(doc, terms);
         if (score) results.push({ doc, score, text: doc.text, section: '' });
         return;
@@ -201,7 +211,7 @@
   }
 
   function resultUrl(result, query) {
-    if (result.doc.type !== 'post') return result.doc.url;
+    if (result.doc.type === 'page') return result.doc.url;
     const joiner = result.doc.url.includes('?') ? '&' : '?';
     let url = result.doc.url + joiner + 'q=' + encodeURIComponent(query);
     if (result.slug) url += '&section=' + encodeURIComponent(result.slug);
@@ -223,7 +233,7 @@
       const doc = result.doc;
       const url = resultUrl(result, query);
       const preview = snippetAround(result.text, terms, 220).text;
-      const kind = doc.type === 'post' ? 'writeup' : 'page';
+      const kind = doc.type === 'post' ? 'writeup' : (doc.type === 'notes' ? 'notes' : 'page');
       const section = result.section ? `<span class="site-search-result-section"><i class="bi bi-arrow-return-right"></i>${escapeHtml(result.section)}</span>` : '';
       return `<a class="site-search-result" href="${escapeHtml(url)}">
         <span class="site-search-result-top"><strong>${highlightTerms(doc.title, terms)}</strong><span>${kind}</span></span>

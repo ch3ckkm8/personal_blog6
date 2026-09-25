@@ -89,6 +89,9 @@ $(document).ready(function () {
               <a class="nav-link" href="graph.html">Graph</a>
             </li>
             <li class="nav-item">
+              <a class="nav-link" href="notes.html">Notes</a>
+            </li>
+            <li class="nav-item">
               <a class="nav-link" href="about.html">About</a>
             </li>
           </ul>
@@ -133,6 +136,9 @@ $(document).ready(function () {
               </li>
               <li class="list-inline-item ms-3">
                 <a class="footer-link" href="graph.html">Graph</a>
+              </li>
+              <li class="list-inline-item ms-3">
+                <a class="footer-link" href="notes.html">Notes</a>
               </li>
               <li class="list-inline-item ms-3">
                 <a class="footer-link" href="about.html">About</a>
