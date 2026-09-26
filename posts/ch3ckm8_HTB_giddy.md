@@ -1,6 +1,6 @@
 ## Intro
 
-- Tags: #windows #NotAssumedBreach #webapp #SQL-injection  #oscppath #medium
+Tags: #windows #NotAssumedBreach #webapp #SQL-injection  #oscppath #medium
 
 ---
 
