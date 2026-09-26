@@ -737,4 +737,3 @@ Here is the list of the steps simplified, per phase, for future reference and fo
 # Sidenotes
 
 
-![](MediaFiles/Pasted%20image%2020251115153944.png)
