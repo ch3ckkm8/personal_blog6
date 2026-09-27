@@ -121,6 +121,70 @@
     return false;
   }
 
+  function notePanel() {
+    return document.getElementById('markdown-note-panel');
+  }
+
+  function noteToggle() {
+    return document.getElementById('markdown-note-toggle');
+  }
+
+  function noteEditor() {
+    return document.getElementById('markdown-note-editor');
+  }
+
+  function activeNoteMode() {
+    const panel = notePanel();
+    if (!panel || panel.hidden) return null;
+    return panel.querySelector('.markdown-note-mode.active') || panel.querySelector('.markdown-note-mode');
+  }
+
+  function handleNoteArrow(key) {
+    const panel = notePanel();
+    const toggle = noteToggle();
+    if (!panel || !toggle) return false;
+
+    const open = !panel.hidden;
+    const inPanel = current && current.closest && current.closest('#markdown-note-panel');
+
+    // The floating note button is the gateway into the open scratchpad.
+    if (open && current === toggle && (key === 'ArrowUp' || key === 'ArrowLeft')) {
+      const target = activeNoteMode() || noteEditor();
+      return target ? setCurrent(target, true) : false;
+    }
+
+    if (!open || !inPanel) return false;
+
+    const editor = noteEditor();
+    const modes = Array.from(panel.querySelectorAll('.markdown-note-mode'));
+    const isMode = current && current.matches && current.matches('.markdown-note-mode');
+
+    if (isMode && (key === 'ArrowLeft' || key === 'ArrowRight')) {
+      const index = modes.indexOf(current);
+      if (index !== -1) {
+        const next = key === 'ArrowRight' ? modes[index + 1] : modes[index - 1];
+        if (next) return setCurrent(next, false);
+      }
+    }
+
+    // Down from Edit/Preview enters the editable note area when it is visible.
+    if (isMode && key === 'ArrowDown' && editor && visible(editor)) {
+      return setCurrent(editor, true);
+    }
+
+    // Up from the editor returns to the currently selected Edit/Preview control.
+    if (current === editor && key === 'ArrowUp') {
+      const mode = activeNoteMode();
+      return mode ? setCurrent(mode, true) : false;
+    }
+
+    // Right/down from the panel controls can return to the floating toggle.
+    if ((key === 'ArrowDown' || key === 'ArrowRight') && isMode && !editor?.offsetParent) {
+      return setCurrent(toggle, true);
+    }
+    return false;
+  }
+
   function activate(el) {
     if (!el) return false;
     if (isTypingTarget(el)) {
@@ -147,6 +211,19 @@
       el.click();
     } else {
       el.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
+    }
+
+    // When the Markdown scratchpad is opened from the keyboard, move the
+    // spatial selection into the panel immediately. Mouse/touch behavior is
+    // unchanged because this runs only through keyboard activation.
+    if (el.id === 'markdown-note-toggle') {
+      window.setTimeout(function () {
+        const panel = notePanel();
+        if (panel && !panel.hidden) {
+          const target = activeNoteMode() || noteEditor();
+          if (target) setCurrent(target, true);
+        }
+      }, 0);
     }
     return true;
   }
@@ -197,7 +274,8 @@
 
     let handled = false;
     if (event.key.startsWith('Arrow')) {
-      handled = handleReaderArrow(event.key);
+      handled = handleNoteArrow(event.key);
+      if (!handled) handled = handleReaderArrow(event.key);
       if (!handled) {
         const target = nearest(event.key);
         if (target) handled = setCurrent(target, true);
