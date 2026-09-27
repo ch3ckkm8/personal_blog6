@@ -6,7 +6,7 @@ Description:
 As is common in Windows pentests, you will start the Certified box with credentials for the following account: Username: judith.mader Password: judith09
 ```
 
-Tags: #windows #AssumedBreach #OSCPpath #certificates #shadowcredential #certvulntoESC9 #medium
+Tags: #windows #AssumedBreach #OSCPpath #certificates #shadowcredential #certvulntoESC9 #medium #AD
 Tools used:
 - enum4linux
 - smbclient

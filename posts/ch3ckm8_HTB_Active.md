@@ -1,7 +1,7 @@
 ## Intro
 
 ![](MediaFiles/Pasted%20image%2020250730112329.png)
-Tags: #windows #NotAssumedBreach #Kerberoasting #OSCPpath 
+Tags: #windows #NotAssumedBreach #Kerberoasting #OSCPpath #easy #AD
 Tools used:
 - GetUserSPNs.py (Kerberoasting)
 - Hashcat (cracking)

@@ -1,7 +1,7 @@
 ## Intro
 
 ![](MediaFiles/Pasted%20image%2020250727182355.png)
-Tags: #windows  #NotAssumedBreach  #AS-REP-roasting #OSCPpath #easy
+Tags: #windows  #NotAssumedBreach  #AS-REP-roasting #OSCPpath #easy #AD
 Tools used:
 enum4linux (smb & rpc enum)
 ldapsearch (ldap enum)

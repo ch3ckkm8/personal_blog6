@@ -192,7 +192,7 @@ Now comes the tricky part , user benjamin cant login to winrm !!
 (ch3ckm8)       (table)
 ### (╯°□°）╯︵ ┻━┻ 
 
-narrator: okay apparently he does not like this table, dude relax, put the table down, keep pro-hacking
+narrator: okay apparently he does not like this table, dude relax, put the table down, keep going
 
 after inspection through his AD permissions it appears that he has NO permission towards other users:
 ![](MediaFiles/Pasted%20image%2020250728131825.png)

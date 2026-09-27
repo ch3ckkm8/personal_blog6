@@ -1,7 +1,7 @@
 ## Intro
 
 ![](HTB_machines/MediaFiles/Pasted%20image%2020250809133212.png)
-Tags: #windows #NotAssumedBreach #OSCPpath #PrivGroupAbuse #hard
+Tags: #windows #NotAssumedBreach #OSCPpath #PrivGroupAbuse #hard #AD
 Tools used:
 - rpcclient (RPC enum)
 - smbmap (SMB enum)

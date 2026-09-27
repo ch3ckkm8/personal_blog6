@@ -3,7 +3,7 @@
 ![cicada_image.png](MediaFiles/cicada_image.png)
 
 
-Tags: #windows #NotAssumedBreach #PrivGroupAbuse #easy
+Tags: #windows #NotAssumedBreach #PrivGroupAbuse #easy #AD
 
 - rpcclient (RPC enumeration)
 - nxc (LDAP, SMB enumeration, rid-brute-force, password spraying)

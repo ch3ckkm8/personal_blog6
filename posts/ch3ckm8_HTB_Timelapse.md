@@ -2,10 +2,9 @@
 
 ![timelapse_image.png](MediaFiles/timelapse_image.png)
 
-Tags: #windows #NotAssumedBreach #history #LAPS #easy
+Tags: #windows #NotAssumedBreach #history #LAPS #easy #AD
 
 Tools used:
-
 - ldapsearch (LDAP enumeration)
 - rpclient (RPC enumeration)
 - smbclient (SMB enumeration)

@@ -2,7 +2,7 @@
 
 ![image.png](MediaFiles/flight_image.png)
 
-Tags: #windows #NotAssumedBreach #WebApp #PortForwarding #Impersonation #DCSync #WinPEAS #Vhosts #OSCPpath #hard
+Tags: #windows #NotAssumedBreach #WebApp #PortForwarding #Impersonation #DCSync #WinPEAS #Vhosts #OSCPpath #hard #AD 
 
 Tools used:
 

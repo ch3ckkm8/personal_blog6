@@ -6,7 +6,7 @@ Machine Information
 ```
 As is common in real life pentests, you will start the Puppy box with credentials for the following account: levi.james / KingofAkron2025!, so its an assumed breach scenario
 ```
-Tags: #windows #AssumedBreach #DCsync #ADdisabledaccount #OSCPpath #medium
+Tags: #windows #AssumedBreach #DCsync #ADdisabledaccount #OSCPpath #medium #AD
 Tools used:
 - smbclient (smb enumeration)
 - bloodyAD (add user to group, perform password reset)

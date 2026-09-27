@@ -2,10 +2,9 @@
 
 ![image.png](MediaFiles/escape_image.png)
 
-Tags: #windows #NotAssumedBreach #mssql #certificates #certvulntoESC1 #medium
+Tags: #windows #NotAssumedBreach #mssql #certificates #certvulntoESC1 #medium #AD
 
 Tools used:
-
 - rpcclient (RPC enumeration)
 - smbclient (SMB enumeration)
 - ldapsearch (LDAP enumeration)
