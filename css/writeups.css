@@ -183,3 +183,15 @@
 [data-bs-theme="dark"] .tag-cloud-item.colored-tag.active {
   color: #050505 !important;
 }
+
+.writeup-total-count {
+  display: inline-flex;
+  align-items: center;
+  padding: .18rem .55rem;
+  border: 1px solid var(--accent);
+  border-radius: 999px;
+  color: var(--accent);
+  background: var(--accent-dim);
+  font: 600 .7rem/1.2 var(--font-mono);
+  white-space: nowrap;
+}

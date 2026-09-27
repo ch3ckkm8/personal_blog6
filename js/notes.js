@@ -124,7 +124,33 @@ $(document).ready(async function () {
       if (!code) return;
 
       if (typeof hljs !== 'undefined') {
-        hljs.highlightElement(code);
+        // Normalize common Markdown fence aliases, then gracefully fall back to
+        // auto-detection when a requested language is not bundled by Highlight.js.
+        const languageClass = Array.from(code.classList).find(function (name) {
+          return name.indexOf('language-') === 0;
+        });
+        const requested = languageClass ? languageClass.slice(9).toLowerCase() : '';
+        const aliases = {
+          sh: 'bash', shell: 'bash', console: 'bash', terminal: 'bash', zsh: 'bash',
+          ps1: 'powershell', pwsh: 'powershell',
+          py: 'python', js: 'javascript', ts: 'typescript',
+          html: 'xml', svg: 'xml', text: 'plaintext', txt: 'plaintext'
+        };
+        const language = aliases[requested] || requested;
+
+        if (language && hljs.getLanguage(language)) {
+          if (languageClass && language !== requested) {
+            code.classList.remove(languageClass);
+            code.classList.add('language-' + language);
+          }
+          hljs.highlightElement(code);
+        } else {
+          if (languageClass) code.classList.remove(languageClass);
+          const result = hljs.highlightAuto(code.textContent);
+          code.innerHTML = result.value;
+          code.classList.add('hljs');
+          if (result.language) code.classList.add('language-' + result.language);
+        }
       }
 
       const button = document.createElement('button');

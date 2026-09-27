@@ -3,6 +3,7 @@ import json
 import re
 from pathlib import Path
 from datetime import date
+import subprocess
 
 ROOT = Path(__file__).resolve().parents[1]
 POSTS = ROOT / 'posts'
@@ -49,6 +50,34 @@ def excerpt(body):
     return value[:217] + '...' if len(value) > 220 else value
 
 
+
+def load_existing_dates():
+    """Keep stable dates as a fallback when Git history is unavailable."""
+    try:
+        existing = json.loads(OUT.read_text(encoding='utf-8'))
+        return {item.get('file'): item.get('date') for item in existing if item.get('file') and item.get('date')}
+    except Exception:
+        return {}
+
+
+def first_added_date(path, existing_dates):
+    """Return the date this post was first committed to Git (our upload/publish date)."""
+    relative = path.relative_to(ROOT).as_posix()
+    try:
+        result = subprocess.run(
+            ['git', 'log', '--follow', '--diff-filter=A', '--format=%as', '--', relative],
+            cwd=ROOT, capture_output=True, text=True, check=False
+        )
+        dates = [line.strip() for line in result.stdout.splitlines() if line.strip()]
+        if dates:
+            return dates[-1]
+    except (OSError, subprocess.SubprocessError):
+        pass
+    if relative in existing_dates:
+        return existing_dates[relative]
+    return date.fromtimestamp(path.stat().st_mtime).isoformat()
+
+
 def read_markdown(path):
     # utf-8-sig transparently handles an optional UTF-8 BOM. Replacement keeps one
     # unusual byte from preventing every other post from being deployed.
@@ -56,6 +85,7 @@ def read_markdown(path):
 
 
 items = []
+existing_dates = load_existing_dates()
 POSTS.mkdir(exist_ok=True)
 paths = discover_posts()
 
@@ -67,7 +97,7 @@ for path in paths:
         'file': relative,
         'category': 'Other',
         'tags': extract_tags(body),
-        'date': date.fromtimestamp(path.stat().st_mtime).isoformat(),
+        'date': first_added_date(path, existing_dates),
         'difficulty': 'N/A',
         'excerpt': excerpt(body),
         'featured': False,

@@ -24,6 +24,7 @@
   $(document).ready(async function () {
     const WRITEUPS = await window.SITE_WRITEUPS_READY;
     if (!document.getElementById('writeup-grid')) return;
+    $('#writeup-total-count').text(WRITEUPS.length + (WRITEUPS.length === 1 ? ' published' : ' published'));
 
     const requestedTag = new URLSearchParams(window.location.search).get('tag');
     let activeTag = requestedTag && WRITEUPS.some(function (w) { return (w.tags || []).includes(requestedTag); }) ? requestedTag : null;

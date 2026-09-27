@@ -127,6 +127,19 @@
       try { el.focus({ preventScroll: true }); } catch (_) { el.focus(); }
       return true;
     }
+
+    // Activate links explicitly. This is more reliable for navbar entries that
+    // are injected after page load (including Notes) than relying on a
+    // synthetic click alone.
+    const link = el.matches && el.matches('a[href]') ? el : (el.closest ? el.closest('a[href]') : null);
+    if (link) {
+      const href = link.getAttribute('href');
+      if (!href) return false;
+      if (link.target === '_blank') window.open(link.href, '_blank', 'noopener,noreferrer');
+      else window.location.assign(link.href);
+      return true;
+    }
+
     el.click();
     return true;
   }
