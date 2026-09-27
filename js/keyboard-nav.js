@@ -140,7 +140,14 @@
       return true;
     }
 
-    el.click();
+    // SVG/D3 graph nodes do not reliably expose HTMLElement.click().
+    // Dispatch a real bubbling mouse event so Enter follows the exact same
+    // D3 click handler as a physical mouse click.
+    if (typeof el.click === 'function') {
+      el.click();
+    } else {
+      el.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
+    }
     return true;
   }
 

@@ -52,16 +52,20 @@ def excerpt(body):
 
 
 def load_existing_dates():
-    """Keep stable dates as a fallback when Git history is unavailable."""
+    """Load stable publish dates already recorded in the generated catalog."""
     try:
         existing = json.loads(OUT.read_text(encoding='utf-8'))
-        return {item.get('file'): item.get('date') for item in existing if item.get('file') and item.get('date')}
+        return {
+            item.get('file'): item.get('date')
+            for item in existing
+            if item.get('file') and item.get('date')
+        }
     except Exception:
         return {}
 
 
-def first_added_date(path, existing_dates):
-    """Return the date this post was first committed to Git (our upload/publish date)."""
+def git_first_added_date(path):
+    """Return the first Git commit date for a post when full history is available."""
     relative = path.relative_to(ROOT).as_posix()
     try:
         result = subprocess.run(
@@ -73,9 +77,28 @@ def first_added_date(path, existing_dates):
             return dates[-1]
     except (OSError, subprocess.SubprocessError):
         pass
-    if relative in existing_dates:
-        return existing_dates[relative]
-    return date.fromtimestamp(path.stat().st_mtime).isoformat()
+    return None
+
+
+def publish_date(path, existing_dates):
+    """Stable publish date: never rewrite an already catalogued post on rebuild."""
+    relative = path.relative_to(ROOT).as_posix()
+
+    # Once a post has a publish date, keep it permanently stable across Pages
+    # checkouts/deployments. This avoids checkout mtimes turning every card into
+    # today's date.
+    existing = existing_dates.get(relative)
+    if existing:
+        return existing, 'catalog'
+
+    # New post: seed from its first Git commit when available.
+    git_date = git_first_added_date(path)
+    if git_date:
+        return git_date, 'git-first-add'
+
+    # Local/non-Git build fallback. No filesystem mtime is used because checkout
+    # mtimes are deployment times, not publish dates.
+    return date.today().isoformat(), 'first-discovery'
 
 
 def read_markdown(path):
@@ -92,18 +115,19 @@ paths = discover_posts()
 for path in paths:
     body = read_markdown(path)
     relative = path.relative_to(ROOT).as_posix()
+    resolved_date, date_source = publish_date(path, existing_dates)
     items.append({
         'title': display_title_from_filename(path),
         'file': relative,
         'category': 'Other',
         'tags': extract_tags(body),
-        'date': first_added_date(path, existing_dates),
+        'date': resolved_date,
         'difficulty': 'N/A',
         'excerpt': excerpt(body),
         'featured': False,
         'content': body,
     })
-    print(f'  + {relative} ({len(items[-1]["tags"])} tag(s))')
+    print(f'  + {relative} ({len(items[-1]["tags"])} tag(s), date={resolved_date}, source={date_source})')
 
 OUT.write_text(json.dumps(items, indent=2, ensure_ascii=False) + '\n', encoding='utf-8')
 print(f'Generated {OUT.relative_to(ROOT)} with {len(items)} post(s).')
