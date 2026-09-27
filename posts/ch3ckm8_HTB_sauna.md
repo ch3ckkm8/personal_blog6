@@ -1,7 +1,8 @@
 ## Intro
 
 ![](MediaFiles/Pasted%20image%2020250805150432.png)
-Tags: #windows #NotAssumedBreach #OSCPpath #DCSync #WinPEAS #easy #AD
+
+Tags: #windows #NotAssumedBreach #OSCPpath #DCsync #WinPEAS #easy #AD
 Tools used:
 - BurpSuite (inspecting the web app)
 - GetNPUsers.py (AS-REP roasting)
