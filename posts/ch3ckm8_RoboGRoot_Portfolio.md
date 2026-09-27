@@ -15,7 +15,7 @@ In this CTF challenge, you are the hacker. Uncover the flaws, break through the 
 Welcome to "Portfolio CTF" The game is on. Good luck!
 ```
 
-Tags: #linux #WebApp #XSS #RCE #Docker
+Tags: #linux #WebApp #XSS #RCE #docker
 Tools used: 
 netdiscover
 Dirbuster
