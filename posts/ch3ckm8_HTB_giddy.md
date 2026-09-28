@@ -1,9 +1,8 @@
 ## Intro
 
-Tags: #windows #NotAssumedBreach #webapp #SQL-injection  #oscppath #medium
+Tags: #windows #NotAssumedBreach #webapp #SQL-injection  #OSCPpath  #medium
 
 ---
-
 # Reconnaissance
 
 ## Add target to hosts

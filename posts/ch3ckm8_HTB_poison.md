@@ -2,7 +2,7 @@
 ## Intro
 
 
-Tags: #OSCPpath #linux #WebApp #LFI #PortForwarding 
+Tags: #OSCPpath #linux #WebApp #LFI #PortForwarding #medium 
 
 ------------
 # Reconnaissance

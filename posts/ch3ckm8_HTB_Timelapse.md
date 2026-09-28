@@ -2,7 +2,7 @@
 
 ![timelapse_image.png](MediaFiles/timelapse_image.png)
 
-Tags: #windows #NotAssumedBreach #history #LAPS #easy #AD
+Tags: #windows #NotAssumedBreach #history #LAPS #easy #AD #OSCPpath 
 
 Tools used:
 - ldapsearch (LDAP enumeration)

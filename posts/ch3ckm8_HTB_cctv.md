@@ -1,7 +1,7 @@
 ## Intro
 
 ![](MediaFiles/Pasted%20image%2020260308195437.png)
-Tags: #linux #WebApp #DefaultCreds #SQL-injection #PortForwarding #CaptureTraffic #3rd-party-vuln-app #easy
+Tags: #linux #WebApp #DefaultCreds #SQL-injection #PortForwarding #CaptureTraffic #3rd-party-vuln-app #easy #OSCPpath 
 
 --------
 # Reconnaissance

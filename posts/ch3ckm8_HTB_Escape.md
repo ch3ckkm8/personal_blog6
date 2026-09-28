@@ -2,7 +2,7 @@
 
 ![image.png](MediaFiles/escape_image.png)
 
-Tags: #windows #NotAssumedBreach #mssql #certificates #certvulntoESC1 #medium #AD
+Tags: #windows #NotAssumedBreach #mssql #certificates #certvulntoESC1 #medium #AD #OSCPpath 
 
 Tools used:
 - rpcclient (RPC enumeration)

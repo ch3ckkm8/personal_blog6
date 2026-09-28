@@ -1,6 +1,6 @@
 ## Intro
 
-tags: #linux #OSCPpath #WebApp #cronjob # easy
+tags: #linux #OSCPpath #WebApp #cronjob #easy
 
 ------
 ## Logging
