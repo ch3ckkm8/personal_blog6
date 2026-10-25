@@ -1,6 +1,6 @@
 
 # Lainkusanagi OSCP-like progress: 
-- HTB: Linux: 69/71 , Windows: 18/18 , AD: 15/15, Prolabs: 0/2
+- HTB: Linux: 69/71 , Windows: 18/18 , AD: 15/15, Prolabs: 1/2 (Dante/Zephyr)
 - HTB x vulnlab: 0/19
 
 --> writeups for this path are constantly uploaded and updated as my knowledge expands
